@@ -4,100 +4,435 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WenCaleb</title>
+  <meta name="description" content="WenCaleb 的个人网站——刚建好，内容在路上。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23dedad3'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='36' font-weight='600' text-anchor='middle' fill='%230a0a0a'%3EW%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #dedad3;
+      --surface: #d3cec6;
+      --ink: #0a0a0a;
+      --muted: #5c5852;
+      --accent: #256f82;
+      --accent-ink: #ffffff;
+      --on-dark: #dedad3;
+      --on-dark-muted: #b5b0a6;
 
+      --font-display: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --font-text: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+
+      --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+      --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+      --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+      --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+      --step-display: clamp(9.375rem, 19vw, 18.125rem);
+
+      --margin: 2rem;
+      --gutter: 2rem;
+      --section: clamp(5rem, 12vw, 13rem);
+      --radius: 0px;
+
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --t-press: 140ms;
+      --t-hover: 180ms;
+      --t-reveal: 750ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f6f7f9;
-      color: #1a1a1a;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-      padding: 24px;
+      margin: 0;
+      background: var(--ink);
+      color: var(--ink);
+      font-family: var(--font-text);
+      font-size: var(--step-body);
+      line-height: 1.5;
+      font-kerning: normal;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
+    h1, h2, h3, p, figure, ul, li { margin: 0; }
+    ul { padding: 0; list-style: none; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    ::selection { background: var(--accent); color: var(--accent-ink); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .nums { font-variant-numeric: tabular-nums; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-    .card {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 48px 40px;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    .skip {
+      position: absolute; left: 1rem; top: -4rem; z-index: 10;
+      background: var(--bg); color: var(--ink);
+      padding: 0.6rem 1rem; font-size: var(--step-body); text-decoration: none;
+      transition: top var(--t-hover) var(--ease-out);
     }
+    .skip:focus { top: 1rem; }
 
-    /* 改这里：头像。暂时用首字母圆圈，以后可以换成 <img src="头像地址"> */
-    .avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: #1a1a1a;
+    /* ---------- hero ---------- */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: space-between;
       color: #ffffff;
-      font-size: 28px;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    .hero-media { position: absolute; inset: 0; }
+    .hero-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(1) contrast(1.05);
+      opacity: 0;
+      transition: opacity 1.6s ease;
+    }
+    .hero-img.is-active { opacity: 1; }
+    .hero-scrim {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10, 10, 10, 0.72) 0%, rgba(10, 10, 10, 0.5) 100%); /* taste-skill-ignore: neutral scrim over photo, the one sanctioned exception */
+    }
+    .hero-top { position: relative; padding: var(--margin); }
+    .hero-card {
+      display: grid;
+      justify-items: start;
+      gap: 1.15rem;
+      background: var(--ink);
+      color: var(--on-dark);
+      padding: 1.5rem 1.75rem;
+      max-width: min(24rem, 100%);
+    }
+    .hero-wordmark { font-size: var(--step-small); font-weight: 500; letter-spacing: 0.01em; }
+    .hero-note {
+      font-size: var(--step-body);
+      line-height: 1.45;
+      max-width: 20ch;
+    }
+    .hero-action {
+      display: inline-flex; align-items: center;
+      min-height: 2.9rem; padding: 0 1.25rem;
+      background: #e6e2da; color: var(--ink);
+      font-size: var(--step-body); font-weight: 500;
+      text-decoration: none; white-space: nowrap;
+      border-radius: var(--radius);
+      transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+    }
+    .hero-action:hover { background: #f2efe9; }
+    .hero-action:active { transform: scale(0.97); }
+    .hero-bottom { position: relative; padding: var(--margin); }
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: var(--step-display);
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
+      line-height: 0.82;
+      letter-spacing: -0.04em;
+      text-align: center;
+      white-space: nowrap;
+      margin-bottom: -0.14em;
     }
 
-    h1 {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    /* 改这里：一句话介绍自己 */
-    .tagline {
-      font-size: 15px;
-      color: #666666;
-      line-height: 1.6;
-      margin-bottom: 28px;
-    }
-
-    /* 改这里：链接列表。想加就复制一行，想删就删掉整行 */
+    /* ---------- links section ---------- */
     .links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      position: relative; z-index: 1;
+      background: var(--bg);
+      padding: var(--section) var(--margin);
+    }
+    .links-head {
+      font-family: var(--font-display);
+      font-size: var(--step-head);
+      font-weight: 600;
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+      text-indent: 3vw;
+    }
+    .links-body {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+      margin-top: 6rem;
+    }
+    .links-photo {
+      grid-column: 1 / 5;
+      grid-row: 1;
+      align-self: end;
+      position: relative;
+      width: 22vw;
+    }
+    .links-photo .mat {
+      position: absolute;
+      top: 0.85rem; left: 0.85rem;
+      width: 100%; height: 100%;
+      background: var(--accent);
+    }
+    .links-photo img {
+      position: relative;
+      width: 100%; height: auto;
+      filter: grayscale(1) contrast(1.05);
+    }
+    .links-naming {
+      grid-column: 7 / 8;
+      grid-row: 1;
+      align-self: start;
+      font-size: var(--step-small);
+      color: var(--muted);
+    }
+    .links-table {
+      grid-column: 8 / 13;
+      grid-row: 1;
+      display: grid;
+      row-gap: 1.625rem;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 30% minmax(0, 1fr) auto;
+      align-items: baseline;
+      column-gap: 1rem;
+      font-size: var(--step-body);
+    }
+    .row-value { text-align: right; text-decoration: none; white-space: nowrap; }
+    .row-value .arrow { color: var(--muted); }
+    a.row-value:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+    .row-value.is-muted { color: var(--muted); }
+
+    /* ---------- photo band ---------- */
+    .band {
+      position: relative; z-index: 1;
+      background: var(--bg);
+      line-height: 0;
+    }
+    .band img {
+      width: 100%;
+      height: min(70svh, 52rem);
+      object-fit: cover;
+      object-position: center 60%;
+      filter: grayscale(1) contrast(1.05);
     }
 
-    .links a {
-      display: block;
-      padding: 10px 16px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      color: #1a1a1a;
-      text-decoration: none;
-      font-size: 14px;
-      transition: border-color 0.15s, background 0.15s;
+    /* ---------- footer ---------- */
+    .footer {
+      position: relative; z-index: 1;
+      min-height: 100svh;
+      background: var(--ink);
+      color: var(--on-dark);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: var(--margin);
+    }
+    .footer-cols {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 2rem;
+      align-content: start;
+    }
+    .footer-cols li { font-size: var(--step-body); line-height: 1.7; }
+    .footer-cols li + li { color: var(--on-dark-muted); }
+    .footer-cols li.footer-cols-label { color: var(--on-dark); font-weight: 500; }
+    .footer-cols a { text-decoration: none; }
+    .footer-cols a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+    .footer-clock { font-size: var(--step-body); }
+    .footer-bottom { align-self: end; }
+    .footer-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 19vw, 18.75rem);
+      font-weight: 600;
+      line-height: 0.82;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+      margin-bottom: 1.25rem;
+    }
+    .footer-legal {
+      font-size: var(--step-body);
+      color: var(--on-dark-muted);
+      max-width: 44ch;
     }
 
-    .links a:hover {
-      border-color: #1a1a1a;
-      background: #f9fafb;
+    /* ---------- reveal motion ---------- */
+    .js .reveal { opacity: 0; transform: translateY(24px); }
+    .js .reveal.in {
+      opacity: 1; transform: none;
+      transition: opacity var(--t-reveal) var(--ease-out), transform var(--t-reveal) var(--ease-out);
+    }
+    .hero .reveal { transition-delay: 0ms; }
+    .hero .hero-note.reveal { transition-delay: 90ms; }
+    .hero .hero-action.reveal { transition-delay: 170ms; }
+    .hero .hero-name.reveal { transition-delay: 250ms; }
+    .links-body .reveal:nth-child(2) { transition-delay: 80ms; }
+    .links-body .reveal:nth-child(3) { transition-delay: 150ms; }
+    .links-body .reveal:nth-child(4) { transition-delay: 220ms; }
+    .footer-cols .reveal:nth-child(2) { transition-delay: 80ms; }
+    .footer-cols .reveal:nth-child(3) { transition-delay: 150ms; }
+    .footer-cols .reveal:nth-child(4) { transition-delay: 220ms; }
+    .footer-bottom .reveal:nth-child(2) { transition-delay: 120ms; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      .hero-img { transition: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ---------- phone ---------- */
+    @media (max-width: 48em) {
+      :root { --margin: 1.25rem; --gutter: 1.25rem; }
+      .hero-name { font-size: 21vw; }
+      .hero-card { padding: 1.25rem 1.4rem; gap: 1rem; }
+      .hero-note { max-width: 16ch; }
+      .hero-action { padding: 0 1rem; min-height: 2.6rem; }
+      .links { padding-block: calc(var(--section) * 0.7); }
+      .links-head { text-indent: 0; }
+      .links-body { margin-top: 4rem; grid-template-columns: minmax(0, 1fr); row-gap: 3rem; }
+      .links-photo { grid-column: 1; grid-row: 2; width: 60%; justify-self: end; }
+      .links-naming { display: none; }
+      .links-table { grid-column: 1; grid-row: 1; }
+      .row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.15rem; }
+      .row-kind { grid-column: 1 / -1; }
+      .row-place { grid-column: 1; }
+      .row-value { grid-column: 2; }
+      .band img { height: 56svh; }
+      .footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2rem; }
+      .footer-wordmark { font-size: 19vw; }
     }
   </style>
 </head>
 <body>
-  <main class="card">
-    <!-- 改这里：头像里的字母 -->
-    <div class="avatar">W</div>
+  <a class="skip" href="#links">跳到链接</a>
 
-    <!-- 改这里：名字 -->
-    <h1>WenCaleb</h1>
+  <header class="hero" id="top">
+    <div class="hero-media" aria-hidden="true">
+      <img class="hero-img is-active" src="assets/hero-3.jpg" alt="">
+      <img class="hero-img" src="assets/hero-1.jpg" alt="" loading="lazy">
+      <img class="hero-img" src="assets/hero-2.jpg" alt="" loading="lazy">
+    </div>
+    <div class="hero-scrim" aria-hidden="true"></div>
 
-    <!-- 改这里：一句话介绍 -->
-    <p class="tagline">这个人很懒，还没有写介绍。</p>
+    <div class="hero-top">
+      <div class="hero-card">
+        <span class="hero-wordmark reveal">WenCaleb</span>
+        <p class="hero-note reveal">WenCaleb 的个人网站<br>刚建好，内容在路上</p>
+        <a class="hero-action reveal" href="https://github.com/WenCaleb" target="_blank" rel="noopener">在 GitHub 上找到我</a>
+      </div>
+    </div>
 
-    <ul class="links">
-      <li><a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub</a></li>
-      <li><a href="mailto:your@email.com">邮箱</a></li>
-      <!-- 以后想加博客、推特等，复制上面一行改掉文字和链接 -->
-    </ul>
+    <div class="hero-bottom">
+      <h1 class="hero-name reveal">WenCaleb</h1>
+    </div>
+  </header>
+
+  <main>
+    <section class="links" id="links">
+      <h2 class="links-head reveal">我在网上的地址，<br>只有一个，但都是真的</h2>
+      <div class="links-body">
+        <figure class="links-photo reveal">
+          <span class="mat" aria-hidden="true"></span>
+          <img src="assets/insert-1.jpg" alt="一座教堂内部的拱顶与高窗" width="1000" height="1250" loading="lazy">
+        </figure>
+        <p class="links-naming reveal">地址</p>
+        <ul class="links-table">
+          <li class="row reveal">
+            <span class="row-kind">代码</span>
+            <span class="row-place">GitHub</span>
+            <a class="row-value" href="https://github.com/WenCaleb" target="_blank" rel="noopener">github.com/WenCaleb<span class="arrow" aria-hidden="true"> ↗</span></a>
+          </li>
+          <li class="row reveal">
+            <span class="row-kind">网站</span>
+            <span class="row-place">就是这里</span>
+            <a class="row-value" href="https://wencaleb.github.io">wencaleb.github.io<span class="arrow" aria-hidden="true"> ↗</span></a>
+          </li>
+          <li class="row reveal">
+            <span class="row-kind">邮件</span>
+            <span class="row-place">暂缺</span>
+            <span class="row-value is-muted">以后再补</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="band" aria-hidden="true">
+      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy">
+    </section>
   </main>
+
+  <footer class="footer">
+    <ul class="footer-cols">
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">本站</li>
+          <li>WenCaleb 的个人网站</li>
+          <li>建站于 2026 年 10 月</li>
+          <li>托管在 GitHub Pages</li>
+        </ul>
+      </li>
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">导航</li>
+          <li><a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a></li>
+          <li><a href="#top">回到顶部</a></li>
+        </ul>
+      </li>
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">状态</li>
+          <li>内容陆续补充中</li>
+          <li>这个网站刚出生</li>
+        </ul>
+      </li>
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">时间</li>
+          <li>北京时间</li>
+          <li class="footer-clock nums" id="clock">--:--:--</li>
+        </ul>
+      </li>
+    </ul>
+    <div></div>
+    <div class="footer-bottom">
+      <p class="footer-wordmark reveal">WenCaleb</p>
+      <p class="footer-legal reveal">© 2026 WenCaleb · 照片来自 Unsplash：Mika Ruusunen、Carl Nenzen Loven、Todd Quackenbush、Jeff Sheldon、Matthew Wiebe</p>
+    </div>
+  </footer>
+
+  <script>
+    document.documentElement.classList.add('js');
+
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var imgs = Array.prototype.slice.call(document.querySelectorAll('.hero-img'));
+      if (!reduce && imgs.length > 1) {
+        var idx = 0;
+        setInterval(function () {
+          if (document.hidden) return;
+          imgs[idx].classList.remove('is-active');
+          idx = (idx + 1) % imgs.length;
+          imgs[idx].classList.add('is-active');
+        }, 5500);
+      }
+
+      if ('IntersectionObserver' in window && !reduce) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add('in');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+        document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+      }
+
+      var clock = document.getElementById('clock');
+      function tick() {
+        try {
+          clock.textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' });
+        } catch (err) {
+          clock.textContent = new Date().toTimeString().slice(0, 8);
+        }
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
 </body>
 </html>
