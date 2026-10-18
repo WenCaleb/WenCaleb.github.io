@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WenCaleb</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f6f7f9;
+      color: #1a1a1a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      padding: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    /* 改这里：头像。暂时用首字母圆圈，以后可以换成 <img src="头像地址"> */
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #1a1a1a;
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    /* 改这里：一句话介绍自己 */
+    .tagline {
+      font-size: 15px;
+      color: #666666;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    /* 改这里：链接列表。想加就复制一行，想删就删掉整行 */
+    .links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .links a {
+      display: block;
+      padding: 10px 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      color: #1a1a1a;
+      text-decoration: none;
+      font-size: 14px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .links a:hover {
+      border-color: #1a1a1a;
+      background: #f9fafb;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <!-- 改这里：头像里的字母 -->
+    <div class="avatar">W</div>
+
+    <!-- 改这里：名字 -->
+    <h1>WenCaleb</h1>
+
+    <!-- 改这里：一句话介绍 -->
+    <p class="tagline">这个人很懒，还没有写介绍。</p>
+
+    <ul class="links">
+      <li><a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="mailto:your@email.com">邮箱</a></li>
+      <!-- 以后想加博客、推特等，复制上面一行改掉文字和链接 -->
+    </ul>
+  </main>
+</body>
+</html>
