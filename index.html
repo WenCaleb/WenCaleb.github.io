@@ -94,6 +94,14 @@
       background: linear-gradient(to top, rgba(10, 10, 10, 0.72) 0%, rgba(10, 10, 10, 0.5) 100%); /* taste-skill-ignore: neutral scrim over photo, the one sanctioned exception */
     }
     .hero-top { position: relative; padding: var(--margin); }
+    .hero-nav {
+      position: absolute; top: var(--margin); right: var(--margin);
+      z-index: 2;
+      display: flex; gap: 1.75rem;
+      font-size: var(--step-body);
+    }
+    .hero-nav a { color: #ffffff; text-decoration: none; white-space: nowrap; }
+    .hero-nav a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
     .hero-card {
       display: grid;
       justify-items: start;
@@ -275,7 +283,7 @@
     @media (max-width: 48em) {
       :root { --margin: 1.25rem; --gutter: 1.25rem; }
       .hero-name { font-size: 21vw; }
-      .hero-card { padding: 1.25rem 1.4rem; gap: 1rem; }
+      .hero-card { padding: 1.25rem 1.4rem; gap: 1rem; margin-top: 3rem; }
       .hero-note { max-width: 16ch; }
       .hero-action { padding: 0 1rem; min-height: 2.6rem; }
       .links { padding-block: calc(var(--section) * 0.7); }
@@ -304,6 +312,10 @@
       <img class="hero-img" src="assets/hero-2.jpg" alt="" loading="lazy">
     </div>
     <div class="hero-scrim" aria-hidden="true"></div>
+
+    <nav class="hero-nav reveal" aria-label="站内导航">
+      <a href="resources.html">资源</a>
+    </nav>
 
     <div class="hero-top">
       <div class="hero-card">
@@ -339,6 +351,11 @@
             <a class="row-value" href="https://wencaleb.github.io">wencaleb.github.io<span class="arrow" aria-hidden="true"> ↗</span></a>
           </li>
           <li class="row reveal">
+            <span class="row-kind">本站</span>
+            <span class="row-place">资源页</span>
+            <a class="row-value" href="resources.html">resources.html<span class="arrow" aria-hidden="true"> ↗</span></a>
+          </li>
+          <li class="row reveal">
             <span class="row-kind">邮件</span>
             <span class="row-place">暂缺</span>
             <span class="row-value is-muted">以后再补</span>
@@ -365,6 +382,7 @@
       <li class="reveal">
         <ul>
           <li class="footer-cols-label">导航</li>
+          <li><a href="resources.html">资源</a></li>
           <li><a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a></li>
           <li><a href="#top">回到顶部</a></li>
         </ul>

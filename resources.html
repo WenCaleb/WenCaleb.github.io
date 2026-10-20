@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>资源 · WenCaleb</title>
+  <meta name="description" content="WenCaleb 攒下的一些好用和有意思的网址。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23dedad3'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='36' font-weight='600' text-anchor='middle' fill='%230a0a0a'%3EW%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #dedad3;
+      --surface: #d3cec6;
+      --ink: #0a0a0a;
+      --muted: #5c5852;
+      --accent: #256f82;
+      --accent-ink: #ffffff;
+      --on-dark: #dedad3;
+      --on-dark-muted: #b5b0a6;
+
+      --font-display: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --font-text: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+
+      --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+      --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+      --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+      --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+      --step-display: clamp(9.375rem, 19vw, 18.125rem);
+
+      --margin: 2rem;
+      --gutter: 2rem;
+      --section: clamp(5rem, 12vw, 13rem);
+      --radius: 0px;
+
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --t-press: 140ms;
+      --t-hover: 180ms;
+      --t-reveal: 750ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-text);
+      font-size: var(--step-body);
+      line-height: 1.5;
+      font-kerning: normal;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    h1, h2, h3, p, figure, ul, li { margin: 0; }
+    ul { padding: 0; list-style: none; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    ::selection { background: var(--accent); color: var(--accent-ink); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .nums { font-variant-numeric: tabular-nums; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+    .skip {
+      position: absolute; left: 1rem; top: -4rem; z-index: 10;
+      background: var(--ink); color: var(--bg);
+      padding: 0.6rem 1rem; font-size: var(--step-body); text-decoration: none;
+      transition: top var(--t-hover) var(--ease-out);
+    }
+    .skip:focus { top: 1rem; }
+
+    /* ---------- top bar：纯文本条，wordmark + 少量链接，无任何装饰 ---------- */
+    .nav {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: var(--margin);
+      background: var(--bg);
+    }
+    .nav-mark { font-size: var(--step-small); font-weight: 500; letter-spacing: 0.01em; text-decoration: none; }
+    .nav-links { display: flex; gap: 1.75rem; font-size: var(--step-body); }
+    .nav-links a { text-decoration: none; white-space: nowrap; }
+    .nav-links a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+
+    /* ---------- 页头 ---------- */
+    .page-head {
+      background: var(--bg);
+      padding: clamp(4rem, 10vw, 9rem) var(--margin) clamp(3rem, 7vw, 6rem);
+    }
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(7rem, 22vw, 19rem);
+      font-weight: 600;
+      line-height: 0.82;
+      letter-spacing: -0.04em;
+      margin-bottom: -0.08em;
+    }
+    .page-note {
+      margin-top: 2.75rem;
+      font-size: var(--step-lead);
+      line-height: 1.4;
+      max-width: 26ch;
+    }
+    .page-action {
+      display: none;
+      align-items: center;
+      margin-top: 2.75rem;
+      min-height: 2.9rem; padding: 0 1.25rem;
+      background: var(--ink); color: var(--bg);
+      border: none; cursor: pointer;
+      font-family: var(--font-text);
+      font-size: var(--step-body); font-weight: 500;
+      white-space: nowrap;
+      border-radius: var(--radius);
+      transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+    }
+    .js .page-action { display: inline-flex; }
+    .page-action:hover { background: #262523; }
+    .page-action:active { transform: scale(0.97); }
+
+    /* ---------- 分组列表 ---------- */
+    .groups { background: var(--bg); padding-bottom: var(--section); }
+    .group { padding: clamp(2.5rem, 6vw, 5rem) var(--margin) 0; }
+    .group-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 1.1rem + 2.4vw, 3.25rem);
+      font-weight: 600;
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+    }
+    .group-count { font-weight: 400; font-size: var(--step-body); color: var(--muted); margin-left: 0.75rem; white-space: nowrap; }
+    .group-list {
+      margin-top: 3rem;
+      display: grid;
+      row-gap: 1.625rem;
+    }
+    .res-row {
+      display: grid;
+      grid-template-columns: minmax(0, 22rem) minmax(0, 1fr) auto;
+      align-items: baseline;
+      column-gap: 1.5rem;
+      font-size: var(--step-body);
+    }
+    .res-name { font-weight: 500; }
+    .res-desc { color: var(--muted); }
+    .res-url { text-align: right; text-decoration: none; white-space: nowrap; }
+    .res-url .arrow { color: var(--muted); }
+    .res-url:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+
+    /* ---------- photo band ---------- */
+    .band {
+      position: relative; z-index: 1;
+      background: var(--bg);
+      line-height: 0;
+    }
+    .band img {
+      width: 100%;
+      height: min(70svh, 52rem);
+      object-fit: cover;
+      object-position: center 60%;
+      filter: grayscale(1) contrast(1.05);
+    }
+
+    /* ---------- footer ---------- */
+    .footer {
+      position: relative; z-index: 1;
+      min-height: 100svh;
+      background: var(--ink);
+      color: var(--on-dark);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: var(--margin);
+    }
+    .footer-cols {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 2rem;
+      align-content: start;
+    }
+    .footer-cols li { font-size: var(--step-body); line-height: 1.7; }
+    .footer-cols li + li { color: var(--on-dark-muted); }
+    .footer-cols li.footer-cols-label { color: var(--on-dark); font-weight: 500; }
+    .footer-cols a { text-decoration: none; }
+    .footer-cols a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+    .footer-clock { font-size: var(--step-body); }
+    .footer-bottom { align-self: end; }
+    .footer-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 19vw, 18.75rem);
+      font-weight: 600;
+      line-height: 0.82;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+      margin-bottom: 1.25rem;
+    }
+    .footer-legal {
+      font-size: var(--step-body);
+      color: var(--on-dark-muted);
+      max-width: 44ch;
+    }
+
+    /* ---------- reveal motion ---------- */
+    .js .reveal { opacity: 0; transform: translateY(24px); }
+    .js .reveal.in {
+      opacity: 1; transform: none;
+      transition: opacity var(--t-reveal) var(--ease-out), transform var(--t-reveal) var(--ease-out);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ---------- phone ---------- */
+    @media (max-width: 48em) {
+      :root { --margin: 1.25rem; --gutter: 1.25rem; }
+      .page-title { font-size: 24vw; }
+      .page-note { max-width: 100%; }
+      .res-row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.15rem; }
+      .res-desc { grid-column: 1 / -1; }
+      .res-name { grid-column: 1; }
+      .res-url { grid-column: 2; }
+      .band img { height: 56svh; }
+      .footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2rem; }
+      .footer-wordmark { font-size: 19vw; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#res">跳到内容</a>
+
+  <nav class="nav" aria-label="站内导航">
+    <a class="nav-mark" href="index.html">WenCaleb</a>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a>
+    </div>
+  </nav>
+
+  <main id="res">
+    <section class="page-head">
+      <h1 class="page-title reveal">资源</h1>
+      <p class="page-note reveal">我攒下的一些好用和有意思的网址，<br>顺手记在这里，也给你。</p>
+      <button class="page-action reveal" id="random-go" type="button">随机去一个<span aria-hidden="true"> ↗</span></button>
+      <noscript>
+        <p class="page-note" style="margin-top:2rem">列表需要打开 JavaScript 才能显示。</p>
+      </noscript>
+    </section>
+
+    <div class="groups" id="groups">
+      <!-- 列表由页面底部脚本根据 RESOURCES 数组渲染 -->
+    </div>
+
+    <section class="band" aria-hidden="true">
+      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy">
+    </section>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-cols">
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">本站</li>
+          <li>WenCaleb 的个人网站</li>
+          <li>资源陆续补充中</li>
+          <li>托管在 GitHub Pages</li>
+        </ul>
+      </li>
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">导航</li>
+          <li><a href="index.html">首页</a></li>
+          <li><a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a></li>
+          <li><a href="#res">回到顶部</a></li>
+        </ul>
+      </li>
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">状态</li>
+          <li>网址会一直加下去</li>
+          <li>这个网站刚出生</li>
+        </ul>
+      </li>
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">时间</li>
+          <li>北京时间</li>
+          <li class="footer-clock nums" id="clock">--:--:--</li>
+        </ul>
+      </li>
+    </ul>
+    <div></div>
+    <div class="footer-bottom">
+      <p class="footer-wordmark reveal">WenCaleb</p>
+      <p class="footer-legal reveal">© 2026 WenCaleb · 照片来自 Unsplash：Todd Quackenbush</p>
+    </div>
+  </footer>
+
+  <script>
+    document.documentElement.classList.add('js');
+
+    /* ================================================================
+       ★ 在这里加你的网址 ★
+
+       每条一个对象，四个字段：
+         group : 分组名（新名字会自动生成一个新分组，
+                 分组顺序按它在下面第一次出现的先后）
+         name  : 网站名
+         desc  : 一句话说明
+         url   : 网址
+
+       加一条就复制一行改内容，别的都不用动。
+       ================================================================ */
+    var RESOURCES = [
+      /* ↓ 以下是示例占位，换成你自己觉得好用的即可 ↓ */
+      { group: "好用工具", name: "Excalidraw",   desc: "手绘风格的白板，画草图、示意图很快", url: "https://excalidraw.com" },
+      { group: "好用工具", name: "Google Fonts", desc: "免费字体库，本站字体也从这来",       url: "https://fonts.google.com" },
+      { group: "好用工具", name: "MoeMail",    desc: "好像挺好用的一个临时邮箱",     url: "https://sall.cc/zh-CN" },
+      { group: "好用工具", name: "Imagefree", desc: "一款免费AI图片生成器",         url: "https://imagefree.net/zh" },
+      { group: "好用工具", name: "MDN Web Docs", desc: "前端文档，遇到不会的就查它",         url: "https://developer.mozilla.org" },
+      { group: "没事逛逛", name: "Neal.fun",     desc: "一堆好玩的小实验和网页小游戏",       url: "https://neal.fun" },
+      { group: "没事逛逛", name: "WindowSwap",   desc: "随机看别人窗外的风景",               url: "https://www.window-swap.com" },
+      { group: "没事逛逛", name: "Radio Garden", desc: "转动地球仪，听世界各地的电台",       url: "https://radio.garden" },
+      { group: "我要学习", name: "learningmusic", desc: "学习音乐创作的基础知识",       url: "https://learningmusic.ableton.com/zh-Hans/index.html" }
+    ];
+
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* —— 按数据渲染分组列表 —— */
+      var wrap = document.getElementById('groups');
+      var order = [];
+      var buckets = {};
+      RESOURCES.forEach(function (r) {
+        if (!buckets[r.group]) { buckets[r.group] = []; order.push(r.group); }
+        buckets[r.group].push(r);
+      });
+
+      order.forEach(function (gname) {
+        var items = buckets[gname];
+        var sec = document.createElement('section');
+        sec.className = 'group reveal';
+
+        var h2 = document.createElement('h2');
+        h2.className = 'group-title';
+        h2.textContent = gname;
+        var count = document.createElement('span');
+        count.className = 'group-count nums';
+        count.textContent = items.length + ' 个';
+        h2.appendChild(count);
+        sec.appendChild(h2);
+
+        var ul = document.createElement('ul');
+        ul.className = 'group-list';
+        items.forEach(function (r, i) {
+          var li = document.createElement('li');
+          li.className = 'res-row reveal';
+          li.style.transitionDelay = (i * 70) + 'ms';
+
+          var name = document.createElement('span');
+          name.className = 'res-name';
+          name.textContent = r.name;
+
+          var desc = document.createElement('span');
+          desc.className = 'res-desc';
+          desc.textContent = r.desc;
+
+          var a = document.createElement('a');
+          a.className = 'res-url';
+          a.href = r.url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          try {
+            a.textContent = r.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+          } catch (err) {
+            a.textContent = r.url;
+          }
+          var arrow = document.createElement('span');
+          arrow.className = 'arrow';
+          arrow.setAttribute('aria-hidden', 'true');
+          arrow.textContent = ' ↗';
+          a.appendChild(arrow);
+
+          li.appendChild(name);
+          li.appendChild(desc);
+          li.appendChild(a);
+          ul.appendChild(li);
+        });
+        sec.appendChild(ul);
+        wrap.appendChild(sec);
+      });
+
+      /* —— 随机去一个 —— */
+      var go = document.getElementById('random-go');
+      if (go && RESOURCES.length) {
+        go.addEventListener('click', function () {
+          var pick = RESOURCES[Math.floor(Math.random() * RESOURCES.length)];
+          window.open(pick.url, '_blank', 'noopener');
+        });
+      }
+
+      /* —— reveal 动效 —— */
+      if ('IntersectionObserver' in window && !reduce) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add('in');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+        document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+      }
+
+      /* —— footer 时钟 —— */
+      var clock = document.getElementById('clock');
+      function tick() {
+        try {
+          clock.textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' });
+        } catch (err) {
+          clock.textContent = new Date().toTimeString().slice(0, 8);
+        }
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
+</body>
+</html>
