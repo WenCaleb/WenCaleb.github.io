@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>背诵 · WenCaleb</title>
+  <meta name="description" content="WenCaleb 的经文背诵清单。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23dedad3'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='36' font-weight='600' text-anchor='middle' fill='%230a0a0a'%3EW%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #dedad3;
+      --surface: #d3cec6;
+      --ink: #0a0a0a;
+      --muted: #5c5852;
+      --accent: #256f82;
+      --accent-ink: #ffffff;
+      --on-dark: #dedad3;
+      --on-dark-muted: #b5b0a6;
+
+      --font-display: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --font-text: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+
+      --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+      --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+      --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+      --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+
+      --margin: 2rem;
+      --section: clamp(5rem, 12vw, 13rem);
+      --radius: 0px;
+
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --t-hover: 180ms;
+      --t-reveal: 750ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-text);
+      font-size: var(--step-body);
+      line-height: 1.5;
+      font-kerning: normal;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    h1, h2, h3, p, figure, ul, li { margin: 0; }
+    ul { padding: 0; list-style: none; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    ::selection { background: var(--accent); color: var(--accent-ink); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .nums { font-variant-numeric: tabular-nums; }
+
+    .skip {
+      position: absolute; left: 1rem; top: -4rem; z-index: 10;
+      background: var(--ink); color: var(--bg);
+      padding: 0.6rem 1rem; font-size: var(--step-body); text-decoration: none;
+      transition: top var(--t-hover) var(--ease-out);
+    }
+    .skip:focus { top: 1rem; }
+
+    /* ---------- top bar ---------- */
+    .nav {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: var(--margin);
+      background: var(--bg);
+    }
+    .nav-mark { font-size: var(--step-small); font-weight: 500; letter-spacing: 0.01em; text-decoration: none; }
+    .nav-links { display: flex; gap: 1.75rem; font-size: var(--step-body); }
+    .nav-links a { text-decoration: none; white-space: nowrap; }
+    .nav-links a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+
+    /* ---------- reading ---------- */
+    .read-head { padding: clamp(3rem, 8vw, 7rem) var(--margin) 0; }
+    .read-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.75rem, 1.5rem + 5vw, 6.25rem);
+      font-weight: 600;
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+    }
+    .read-meta { margin-top: 1.5rem; font-size: var(--step-body); color: var(--muted); }
+
+    .read-article {
+      padding: clamp(3rem, 6vw, 5rem) var(--margin) var(--section);
+      max-width: 46em;
+    }
+    .read-article h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin: 3.5rem 0 1rem;
+    }
+    .read-article h2:first-child { margin-top: 0; }
+    .read-article p {
+      margin: 0 0 1em;
+      line-height: 1.8;
+    }
+    .read-article strong { font-weight: 600; }
+    .read-article ul { margin: 0 0 1em; padding-left: 1.25em; list-style: disc; }
+    .read-article blockquote {
+      margin: 0 0 1em;
+      padding-left: 1.25em;
+    }
+
+    .read-error { padding: 4rem var(--margin); max-width: 46em; }
+    .read-error p { font-size: var(--step-lead); line-height: 1.5; }
+
+    /* ---------- footer ---------- */
+    .footer {
+      position: relative; z-index: 1;
+      background: var(--ink);
+      color: var(--on-dark);
+      display: grid;
+      grid-template-rows: auto auto;
+      row-gap: clamp(4rem, 10vw, 9rem);
+      padding: var(--margin);
+    }
+    .footer-cols {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 2rem;
+      align-content: start;
+    }
+    .footer-cols li { font-size: var(--step-body); line-height: 1.7; }
+    .footer-cols li + li { color: var(--on-dark-muted); }
+    .footer-cols li.footer-cols-label { color: var(--on-dark); font-weight: 500; }
+    .footer-cols a { text-decoration: none; }
+    .footer-cols a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+    .footer-bottom { align-self: end; }
+    .footer-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(4.5rem, 19vw, 18.75rem);
+      font-weight: 600;
+      line-height: 0.82;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+      margin-bottom: 1.25rem;
+    }
+    .footer-legal {
+      font-size: var(--step-body);
+      color: var(--on-dark-muted);
+      max-width: 44ch;
+    }
+
+    /* ---------- reveal motion ---------- */
+    .js .reveal { opacity: 0; transform: translateY(24px); }
+    .js .reveal.in {
+      opacity: 1; transform: none;
+      transition: opacity var(--t-reveal) var(--ease-out), transform var(--t-reveal) var(--ease-out);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ---------- phone ---------- */
+    @media (max-width: 48em) {
+      :root { --margin: 1.25rem; }
+      .footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2rem; }
+      .footer-wordmark { font-size: 19vw; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#read">跳到内容</a>
+
+  <nav class="nav" aria-label="站内导航">
+    <a class="nav-mark" href="index.html">WenCaleb</a>
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="resources.html">资源</a>
+      <a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a>
+    </div>
+  </nav>
+
+  <main id="read">
+    <section class="read-head">
+      <h1 class="read-title reveal" id="read-title">背诵</h1>
+      <p class="read-meta reveal" id="read-meta"></p>
+    </section>
+    <article class="read-article" id="read-article" hidden></article>
+    <div class="read-error" id="read-error" hidden>
+      <p>这个文件暂时打不开。<br>如果在本地看，需要通过本地服务器访问（直接双击文件会被浏览器拦下）；在线上不会遇到这个问题。</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-cols">
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">本站</li>
+          <li>WenCaleb 的个人网站</li>
+          <li>背诵清单陆续增加</li>
+          <li>托管在 GitHub Pages</li>
+        </ul>
+      </li>
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">导航</li>
+          <li><a href="index.html">首页</a></li>
+          <li><a href="resources.html">资源</a></li>
+          <li><a href="recite.html">背诵</a></li>
+          <li><a href="#read">回到顶部</a></li>
+        </ul>
+      </li>
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">状态</li>
+          <li>内容陆续补充中</li>
+          <li>这个网站刚出生</li>
+        </ul>
+      </li>
+      <li class="reveal">
+        <ul>
+          <li class="footer-cols-label">时间</li>
+          <li>北京时间</li>
+          <li class="footer-clock nums" id="clock">--:--:--</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="footer-bottom">
+      <p class="footer-wordmark reveal">WenCaleb</p>
+      <p class="footer-legal reveal">© 2026 WenCaleb</p>
+    </div>
+  </footer>
+
+  <script src="assets/marked.min.js"></script>
+  <script src="recite/data.js"></script>
+  <script src="recite/list.js"></script>
+  <script>
+    document.documentElement.classList.add('js');
+
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var params = new URLSearchParams(location.search);
+      var f = params.get('f');
+      var item = null;
+      for (var i = 0; i < RECITE_FILES.length; i++) {
+        if (RECITE_FILES[i].file === f) { item = RECITE_FILES[i]; break; }
+      }
+
+      var titleEl = document.getElementById('read-title');
+      var metaEl = document.getElementById('read-meta');
+      var article = document.getElementById('read-article');
+      var errorEl = document.getElementById('read-error');
+
+      if (!item) {
+        document.querySelector('.read-head').hidden = true;
+        errorEl.hidden = false;
+        errorEl.querySelector('p').textContent = '没有找到这份清单。回到背诵页看看有什么吧。';
+        startReveal();
+        return;
+      }
+
+      document.title = item.title + ' · 背诵 · WenCaleb';
+      titleEl.textContent = item.title;
+
+      var text = (window.RECITE_DATA || {})[item.file];
+      if (!text) {
+        document.querySelector('.read-head').hidden = true;
+        errorEl.hidden = false;
+        errorEl.querySelector('p').textContent = '内容文件还没生成：双击网站文件夹里的 build.bat，再刷新这个页面。';
+        startReveal();
+        return;
+      }
+
+      /* 双保险：数据文件生成时已清理过，这里再过滤一次，脏内容也进不来 */
+      text = text.replace(/^\uFEFF/, '');
+      if (text.slice(0, 3) === '---') {
+        text = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+      }
+      text = text.split('\n').filter(function (line) {
+        return !/\[\[[^\]]*\]\]/.test(line);
+      }).join('\n');
+
+      var html = marked.parse(text, { gfm: true, breaks: true });
+      article.innerHTML = html;
+
+      /* 段数统计：## 开头的标题数 */
+      var count = (text.match(/^##\s/gm) || []).length;
+      metaEl.textContent = '和合本 · ' + count + ' 段';
+
+      article.hidden = false;
+      article.querySelectorAll(':scope > *').forEach(function (el, i) {
+        el.classList.add('reveal');
+        el.style.transitionDelay = Math.min(i * 40, 400) + 'ms';
+      });
+      startReveal();
+
+      function startReveal() {
+        if ('IntersectionObserver' in window && !reduce) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
+          document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+        } else {
+          document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+        }
+      }
+    })();
+
+    /* 时钟（所有路径共用） */
+    (function () {
+      var clock = document.getElementById('clock');
+      if (!clock) return;
+      function tick() {
+        try {
+          clock.textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' });
+        } catch (err) {
+          clock.textContent = new Date().toTimeString().slice(0, 8);
+        }
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
+</body>
+</html>
