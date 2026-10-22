@@ -9,6 +9,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    /* .js：功能开关；.motion：动效开关（减少动态时不加，页面默认全可见） */
+    document.documentElement.classList.add('js');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('motion');
+    }
+  </script>
+  <script src="assets/vendor/gsap.min.js" defer></script>
+  <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="assets/js/motion.js" defer></script>
   <style>
     :root {
       --bg: #dedad3;
@@ -88,11 +98,16 @@
     }
     .page-title {
       font-family: var(--font-display);
-      font-size: clamp(7rem, 22vw, 19rem);
+      font-size: clamp(4.5rem, 13.5vw, 12rem);
       font-weight: 600;
-      line-height: 0.82;
+      line-height: 0.85;
       letter-spacing: -0.04em;
       margin-bottom: -0.08em;
+    }
+    .page-sub {
+      margin-top: 1.25rem;
+      font-size: var(--step-lead);
+      color: var(--muted);
     }
     .page-note {
       margin-top: 2.75rem;
@@ -198,22 +213,24 @@
       max-width: 44ch;
     }
 
-    /* ---------- reveal motion ---------- */
-    .js .reveal { opacity: 0; transform: translateY(24px); }
-    .js .reveal.in {
-      opacity: 1; transform: none;
-      transition: opacity var(--t-reveal) var(--ease-out), transform var(--t-reveal) var(--ease-out);
-    }
+    /* ---------- motion（GSAP 接管；.motion 缺失时页面默认全可见） ---------- */
+    .motion .reveal { opacity: 0; transform: translateY(28px); }
+    .char-wrap { display: inline-block; overflow: hidden; vertical-align: bottom; }
+    .motion .char { display: inline-block; transform: translateY(115%); }
+    .motion .img-reveal { clip-path: inset(0 0 100% 0); }
+
+    /* 降级：GSAP 失败 / 脚本未启动 → 一切可见 */
+    .motion-off .reveal, .motion-off .char { opacity: 1 !important; transform: none !important; }
+    .motion-off .img-reveal { clip-path: none !important; }
 
     @media (prefers-reduced-motion: reduce) {
-      .js .reveal { opacity: 1; transform: none; transition: none; }
       html { scroll-behavior: auto; }
     }
 
     /* ---------- phone ---------- */
     @media (max-width: 48em) {
       :root { --margin: 1.25rem; --gutter: 1.25rem; }
-      .page-title { font-size: 24vw; }
+      .page-title { font-size: 15vw; }
       .page-note { max-width: 100%; }
       .res-row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.15rem; }
       .res-desc { grid-column: 1 / -1; }
@@ -238,7 +255,8 @@
 
   <main id="res">
     <section class="page-head">
-      <h1 class="page-title reveal">资源</h1>
+      <h1 class="page-title" data-motion="chars">RESOURCES</h1>
+      <p class="page-sub reveal">资源</p>
       <p class="page-note reveal">我攒下的一些好用和有意思的网址，<br>顺手记在这里，也给你。</p>
       <button class="page-action reveal" id="random-go" type="button">随机去一个<span aria-hidden="true"> ↗</span></button>
       <noscript>
@@ -251,7 +269,7 @@
     </div>
 
     <section class="band" aria-hidden="true">
-      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy">
+      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy" data-parallax>
     </section>
   </main>
 
@@ -291,14 +309,12 @@
     </ul>
     <div></div>
     <div class="footer-bottom">
-      <p class="footer-wordmark reveal">WenCaleb</p>
+      <p class="footer-wordmark" data-motion="chars">WenCaleb</p>
       <p class="footer-legal reveal">© 2026 WenCaleb · 照片来自 Unsplash：Todd Quackenbush</p>
     </div>
   </footer>
 
   <script>
-    document.documentElement.classList.add('js');
-
     /* ================================================================
        ★ 在这里加你的网址 ★
 
@@ -325,8 +341,6 @@
     ];
 
     (function () {
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
       /* —— 按数据渲染分组列表 —— */
       var wrap = document.getElementById('groups');
       var order = [];
@@ -355,7 +369,6 @@
         items.forEach(function (r, i) {
           var li = document.createElement('li');
           li.className = 'res-row reveal';
-          li.style.transitionDelay = (i * 70) + 'ms';
 
           var name = document.createElement('span');
           name.className = 'res-name';
@@ -399,20 +412,7 @@
         });
       }
 
-      /* —— reveal 动效 —— */
-      if ('IntersectionObserver' in window && !reduce) {
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            if (e.isIntersecting) {
-              e.target.classList.add('in');
-              io.unobserve(e.target);
-            }
-          });
-        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-        document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-      } else {
-        document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
-      }
+      /* —— reveal 动效由 assets/js/motion.js 统一处理 —— */
 
       /* —— footer 时钟 —— */
       var clock = document.getElementById('clock');
@@ -426,6 +426,15 @@
       tick();
       setInterval(tick, 1000);
     })();
+  </script>
+
+  <!-- 兜底：动效脚本没启动时，强制显示全部内容 -->
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (!window.__motionStarted) document.documentElement.classList.add('motion-off');
+      }, 1200);
+    });
   </script>
 </body>
 </html>

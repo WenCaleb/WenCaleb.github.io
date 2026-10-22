@@ -9,6 +9,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    /* .js：功能开关（随机按钮等）；.motion：动效开关（减少动态时不加，页面默认全可见） */
+    document.documentElement.classList.add('js');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('motion');
+    }
+  </script>
+  <script src="assets/vendor/gsap.min.js" defer></script>
+  <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="assets/js/motion.js" defer></script>
   <style>
     :root {
       --bg: #dedad3;
@@ -146,19 +156,23 @@
       background: var(--bg);
       padding: var(--section) var(--margin);
     }
-    .links-head {
+    .sec-display {
       font-family: var(--font-display);
-      font-size: var(--step-head);
+      font-size: clamp(4rem, 11vw, 10rem);
       font-weight: 600;
-      line-height: 0.98;
-      letter-spacing: -0.02em;
-      text-indent: 3vw;
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+    }
+    .links-sub {
+      margin-top: 1.5rem;
+      font-size: var(--step-lead);
+      line-height: 1.35;
     }
     .links-body {
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: var(--gutter);
-      margin-top: 6rem;
+      margin-top: 4.5rem;
     }
     .links-photo {
       grid-column: 1 / 5;
@@ -255,27 +269,43 @@
       max-width: 44ch;
     }
 
-    /* ---------- reveal motion ---------- */
-    .js .reveal { opacity: 0; transform: translateY(24px); }
-    .js .reveal.in {
-      opacity: 1; transform: none;
-      transition: opacity var(--t-reveal) var(--ease-out), transform var(--t-reveal) var(--ease-out);
+    /* ---------- motion（GSAP 接管；.motion 缺失时页面默认全可见） ---------- */
+    .preloader {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: var(--ink); color: var(--on-dark);
+      align-items: center; justify-content: center;
     }
-    .hero .reveal { transition-delay: 0ms; }
-    .hero .hero-note.reveal { transition-delay: 90ms; }
-    .hero .hero-action.reveal { transition-delay: 170ms; }
-    .hero .hero-name.reveal { transition-delay: 250ms; }
-    .links-body .reveal:nth-child(2) { transition-delay: 80ms; }
-    .links-body .reveal:nth-child(3) { transition-delay: 150ms; }
-    .links-body .reveal:nth-child(4) { transition-delay: 220ms; }
-    .footer-cols .reveal:nth-child(2) { transition-delay: 80ms; }
-    .footer-cols .reveal:nth-child(3) { transition-delay: 150ms; }
-    .footer-cols .reveal:nth-child(4) { transition-delay: 220ms; }
-    .footer-bottom .reveal:nth-child(2) { transition-delay: 120ms; }
+    .motion .preloader { display: flex; }
+    @media (max-width: 48em) { .motion .preloader { display: none; } } /* 移动端跳过全屏预载层 */
+    .preloader-box { display: grid; justify-items: center; row-gap: 1.25rem; }
+    .preloader-mark {
+      font-family: var(--font-display);
+      font-size: clamp(1.375rem, 3vw, 2.25rem);
+      font-weight: 600; letter-spacing: -0.02em; line-height: 1;
+    }
+    .preloader-bar {
+      display: block; width: min(14rem, 56vw); height: 2px;
+      background: rgba(222, 218, 211, 0.18); overflow: hidden;
+    }
+    .preloader-fill {
+      display: block; width: 100%; height: 100%;
+      background: var(--on-dark); transform: scaleX(0); transform-origin: left;
+    }
+
+    .motion .reveal { opacity: 0; transform: translateY(28px); }
+    .char-wrap { display: inline-block; overflow: hidden; vertical-align: bottom; }
+    .motion .char { display: inline-block; transform: translateY(115%); }
+    .line-mask { display: block; overflow: hidden; }
+    .motion .line { display: block; transform: translateY(115%); }
+    .motion .img-reveal { clip-path: inset(0 0 100% 0); }
+
+    /* 降级：GSAP 失败 / 脚本未启动 → 一切可见 */
+    .motion-off .reveal, .motion-off .char, .motion-off .line { opacity: 1 !important; transform: none !important; }
+    .motion-off .img-reveal { clip-path: none !important; }
+    .motion-off .preloader { display: none !important; }
 
     @media (prefers-reduced-motion: reduce) {
-      .js .reveal { opacity: 1; transform: none; transition: none; }
-      .hero-img { transition: none; }
       html { scroll-behavior: auto; }
     }
 
@@ -287,7 +317,7 @@
       .hero-note { max-width: 16ch; }
       .hero-action { padding: 0 1rem; min-height: 2.6rem; }
       .links { padding-block: calc(var(--section) * 0.7); }
-      .links-head { text-indent: 0; }
+      .sec-display { font-size: clamp(3.25rem, 16vw, 6rem); }
       .links-body { margin-top: 4rem; grid-template-columns: minmax(0, 1fr); row-gap: 3rem; }
       .links-photo { grid-column: 1; grid-row: 2; width: 60%; justify-self: end; }
       .links-naming { display: none; }
@@ -304,6 +334,13 @@
 </head>
 <body>
   <a class="skip" href="#links">跳到链接</a>
+
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader-box">
+      <span class="preloader-mark">WenCaleb</span>
+      <span class="preloader-bar"><span class="preloader-fill"></span></span>
+    </div>
+  </div>
 
   <header class="hero" id="top">
     <div class="hero-media" aria-hidden="true">
@@ -326,15 +363,16 @@
     </div>
 
     <div class="hero-bottom">
-      <h1 class="hero-name reveal">WenCaleb</h1>
+      <h1 class="hero-name" data-motion="chars">WenCaleb</h1>
     </div>
   </header>
 
   <main>
     <section class="links" id="links">
-      <h2 class="links-head reveal">我在网上的地址，<br>只有一个，但都是真的</h2>
+      <h2 class="sec-display"><span class="line-mask"><span class="line">LINKS</span></span></h2>
+      <p class="links-sub reveal">我在网上的地址，<br>只有一个，但都是真的</p>
       <div class="links-body">
-        <figure class="links-photo reveal">
+        <figure class="links-photo img-reveal">
           <span class="mat" aria-hidden="true"></span>
           <img src="assets/insert-1.jpg" alt="一座教堂内部的拱顶与高窗" width="1000" height="1250" loading="lazy">
         </figure>
@@ -365,7 +403,7 @@
     </section>
 
     <section class="band" aria-hidden="true">
-      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy">
+      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy" data-parallax>
     </section>
   </main>
 
@@ -405,42 +443,14 @@
     </ul>
     <div></div>
     <div class="footer-bottom">
-      <p class="footer-wordmark reveal">WenCaleb</p>
+      <p class="footer-wordmark" data-motion="chars">WenCaleb</p>
       <p class="footer-legal reveal">© 2026 WenCaleb · 照片来自 Unsplash：Mika Ruusunen、Carl Nenzen Loven、Todd Quackenbush、Jeff Sheldon、Matthew Wiebe</p>
     </div>
   </footer>
 
   <script>
-    document.documentElement.classList.add('js');
-
     (function () {
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      var imgs = Array.prototype.slice.call(document.querySelectorAll('.hero-img'));
-      if (!reduce && imgs.length > 1) {
-        var idx = 0;
-        setInterval(function () {
-          if (document.hidden) return;
-          imgs[idx].classList.remove('is-active');
-          idx = (idx + 1) % imgs.length;
-          imgs[idx].classList.add('is-active');
-        }, 5500);
-      }
-
-      if ('IntersectionObserver' in window && !reduce) {
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            if (e.isIntersecting) {
-              e.target.classList.add('in');
-              io.unobserve(e.target);
-            }
-          });
-        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-        document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-      } else {
-        document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
-      }
-
+      /* —— footer 时钟（动效归 assets/js/motion.js 管，这里只管时间） —— */
       var clock = document.getElementById('clock');
       function tick() {
         try {
@@ -452,6 +462,15 @@
       tick();
       setInterval(tick, 1000);
     })();
+  </script>
+
+  <!-- 兜底：动效脚本没启动时，强制显示全部内容 -->
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (!window.__motionStarted) document.documentElement.classList.add('motion-off');
+      }, 1200);
+    });
   </script>
 </body>
 </html>

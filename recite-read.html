@@ -9,6 +9,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    /* .js：功能开关；.motion：动效开关（减少动态时不加，页面默认全可见） */
+    document.documentElement.classList.add('js');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('motion');
+    }
+  </script>
+  <script src="assets/vendor/gsap.min.js" defer></script>
+  <script src="assets/js/motion.js" defer></script>
   <style>
     :root {
       --bg: #dedad3;
@@ -152,15 +161,15 @@
       max-width: 44ch;
     }
 
-    /* ---------- reveal motion ---------- */
-    .js .reveal { opacity: 0; transform: translateY(24px); }
-    .js .reveal.in {
-      opacity: 1; transform: none;
-      transition: opacity var(--t-reveal) var(--ease-out), transform var(--t-reveal) var(--ease-out);
-    }
+    /* ---------- motion（GSAP 接管；.motion 缺失时页面默认全可见） ---------- */
+    .motion .reveal { opacity: 0; transform: translateY(24px); }
+    .char-wrap { display: inline-block; overflow: hidden; vertical-align: bottom; }
+    .motion .char { display: inline-block; transform: translateY(115%); }
+
+    /* 降级：GSAP 失败 / 脚本未启动 → 一切可见 */
+    .motion-off .reveal, .motion-off .char { opacity: 1 !important; transform: none !important; }
 
     @media (prefers-reduced-motion: reduce) {
-      .js .reveal { opacity: 1; transform: none; transition: none; }
       html { scroll-behavior: auto; }
     }
 
@@ -186,7 +195,7 @@
 
   <main id="read">
     <section class="read-head">
-      <h1 class="read-title reveal" id="read-title">背诵</h1>
+      <h1 class="read-title" id="read-title" data-motion="chars">背诵</h1>
       <p class="read-meta reveal" id="read-meta"></p>
     </section>
     <article class="read-article" id="read-article" hidden></article>
@@ -230,7 +239,7 @@
       </li>
     </ul>
     <div class="footer-bottom">
-      <p class="footer-wordmark reveal">WenCaleb</p>
+      <p class="footer-wordmark" data-motion="chars">WenCaleb</p>
       <p class="footer-legal reveal">© 2026 WenCaleb</p>
     </div>
   </footer>
@@ -239,11 +248,7 @@
   <script src="recite/data.js"></script>
   <script src="recite/list.js"></script>
   <script>
-    document.documentElement.classList.add('js');
-
     (function () {
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
       var params = new URLSearchParams(location.search);
       var f = params.get('f');
       var item = null;
@@ -260,7 +265,6 @@
         document.querySelector('.read-head').hidden = true;
         errorEl.hidden = false;
         errorEl.querySelector('p').textContent = '没有找到这份清单。回到背诵页看看有什么吧。';
-        startReveal();
         return;
       }
 
@@ -272,7 +276,6 @@
         document.querySelector('.read-head').hidden = true;
         errorEl.hidden = false;
         errorEl.querySelector('p').textContent = '内容文件还没生成：双击网站文件夹里的 build.bat，再刷新这个页面。';
-        startReveal();
         return;
       }
 
@@ -293,30 +296,13 @@
       metaEl.textContent = '和合本 · ' + count + ' 段';
 
       article.hidden = false;
-      article.querySelectorAll(':scope > *').forEach(function (el, i) {
+      /* reveal 动效由 assets/js/motion.js 统一处理 */
+      article.querySelectorAll(':scope > *').forEach(function (el) {
         el.classList.add('reveal');
-        el.style.transitionDelay = Math.min(i * 40, 400) + 'ms';
       });
-      startReveal();
-
-      function startReveal() {
-        if ('IntersectionObserver' in window && !reduce) {
-          var io = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-              if (e.isIntersecting) {
-                e.target.classList.add('in');
-                io.unobserve(e.target);
-              }
-            });
-          }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
-          document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-        } else {
-          document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
-        }
-      }
     })();
 
-    /* 时钟（所有路径共用） */
+    /* 时钟（所有路径共用，错误分支也能走到） */
     (function () {
       var clock = document.getElementById('clock');
       if (!clock) return;
@@ -330,6 +316,15 @@
       tick();
       setInterval(tick, 1000);
     })();
+  </script>
+
+  <!-- 兜底：动效脚本没启动时，强制显示全部内容 -->
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (!window.__motionStarted) document.documentElement.classList.add('motion-off');
+      }, 1200);
+    });
   </script>
 </body>
 </html>
