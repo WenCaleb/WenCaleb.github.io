@@ -157,7 +157,7 @@
     }
     .footer-cols {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       column-gap: 2rem;
       align-content: start;
     }
@@ -181,6 +181,11 @@
       font-size: var(--step-body);
       color: var(--on-dark-muted);
       max-width: 44ch;
+    }
+    .footer-date {
+      color: var(--on-dark-muted);
+      font-size: var(--step-small);
+      margin-top: 0.35rem;
     }
 
     /* ---------- motion（GSAP 接管；.motion 缺失时页面默认全可见） ---------- */
@@ -213,12 +218,7 @@
   <a class="skip" href="#recite">跳到内容</a>
 
   <nav class="nav" aria-label="站内导航">
-    <a class="nav-mark" href="index.html">WenCaleb</a>
-    <div class="nav-links">
-      <a href="index.html">首页</a>
-      <a href="resources.html">资源</a>
-      <a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a>
-    </div>
+    <span class="nav-mark">WenCaleb</span>
   </nav>
 
   <main id="recite">
@@ -248,15 +248,6 @@
       </li>
       <li class="reveal">
         <ul>
-          <li class="footer-cols-label">导航</li>
-          <li><a href="index.html">首页</a></li>
-          <li><a href="resources.html">资源</a></li>
-          <li><a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a></li>
-          <li><a href="#recite">回到顶部</a></li>
-        </ul>
-      </li>
-      <li class="reveal">
-        <ul>
           <li class="footer-cols-label">状态</li>
           <li>内容陆续补充中</li>
           <li>这个网站刚出生</li>
@@ -267,6 +258,7 @@
           <li class="footer-cols-label">时间</li>
           <li>北京时间</li>
           <li class="footer-clock nums" id="clock">--:--:--</li>
+          <li class="footer-date nums" id="date">----年--月--日</li>
         </ul>
       </li>
     </ul>
@@ -313,13 +305,22 @@
 
       /* —— reveal 动效由 assets/js/motion.js 统一处理 —— */
 
-      /* —— footer 时钟 —— */
+      /* —— footer 时钟 + 日期 —— */
       var clock = document.getElementById('clock');
+      var date = document.getElementById('date');
       function tick() {
+        var now = new Date();
         try {
-          clock.textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' });
+          clock.textContent = now.toLocaleTimeString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' });
         } catch (err) {
-          clock.textContent = new Date().toTimeString().slice(0, 8);
+          clock.textContent = now.toTimeString().slice(0, 8);
+        }
+        if (date) {
+          try {
+            date.textContent = now.toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+          } catch (err) {
+            date.textContent = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate();
+          }
         }
       }
       tick();

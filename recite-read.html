@@ -160,6 +160,11 @@
       color: var(--on-dark-muted);
       max-width: 44ch;
     }
+    .footer-date {
+      color: var(--on-dark-muted);
+      font-size: var(--step-small);
+      margin-top: 0.35rem;
+    }
 
     /* ---------- motion（GSAP 接管；.motion 缺失时页面默认全可见） ---------- */
     .motion .reveal { opacity: 0; transform: translateY(24px); }
@@ -185,12 +190,7 @@
   <a class="skip" href="#read">跳到内容</a>
 
   <nav class="nav" aria-label="站内导航">
-    <a class="nav-mark" href="index.html">WenCaleb</a>
-    <div class="nav-links">
-      <a href="index.html">首页</a>
-      <a href="resources.html">资源</a>
-      <a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a>
-    </div>
+    <span class="nav-mark">WenCaleb</span>
   </nav>
 
   <main id="read">
@@ -217,10 +217,7 @@
       <li class="reveal">
         <ul>
           <li class="footer-cols-label">导航</li>
-          <li><a href="index.html">首页</a></li>
-          <li><a href="resources.html">资源</a></li>
           <li><a href="recite.html">背诵</a></li>
-          <li><a href="#read">回到顶部</a></li>
         </ul>
       </li>
       <li class="reveal">
@@ -235,6 +232,7 @@
           <li class="footer-cols-label">时间</li>
           <li>北京时间</li>
           <li class="footer-clock nums" id="clock">--:--:--</li>
+          <li class="footer-date nums" id="date">----年--月--日</li>
         </ul>
       </li>
     </ul>
@@ -302,15 +300,24 @@
       });
     })();
 
-    /* 时钟（所有路径共用，错误分支也能走到） */
+    /* 时钟 + 日期（所有路径共用，错误分支也能走到） */
     (function () {
       var clock = document.getElementById('clock');
+      var date = document.getElementById('date');
       if (!clock) return;
       function tick() {
+        var now = new Date();
         try {
-          clock.textContent = new Date().toLocaleTimeString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' });
+          clock.textContent = now.toLocaleTimeString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' });
         } catch (err) {
-          clock.textContent = new Date().toTimeString().slice(0, 8);
+          clock.textContent = now.toTimeString().slice(0, 8);
+        }
+        if (date) {
+          try {
+            date.textContent = now.toLocaleDateString('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+          } catch (err) {
+            date.textContent = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate();
+          }
         }
       }
       tick();
