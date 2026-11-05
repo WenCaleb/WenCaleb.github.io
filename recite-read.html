@@ -184,6 +184,135 @@
       .footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2rem; }
       .footer-wordmark { font-size: 19vw; }
     }
+
+    /* ---------- quiz（抽背 / 考考自己） ---------- */
+    .nav-actions { display: flex; gap: 1.5rem; }
+    .nav-action {
+      font: inherit; font-size: var(--step-body);
+      background: none; border: 0; padding: 0; margin: 0;
+      color: var(--ink); cursor: pointer;
+      text-decoration: none; white-space: nowrap;
+    }
+    .nav-action:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+    @media (max-width: 48em) { .nav-actions { gap: 1.1rem; } }
+
+    .qz-modal {
+      position: fixed; inset: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: center;
+      padding: var(--margin);
+      background: rgba(10, 10, 10, 0.5);
+      /* 背后内容高斯模糊 + 轻微降饱和，帮助聚焦浮窗 */
+      -webkit-backdrop-filter: blur(12px) saturate(0.92);
+      backdrop-filter: blur(12px) saturate(0.92);
+      opacity: 0; visibility: hidden;
+      transition: opacity 320ms var(--ease-out), visibility 0s linear 400ms;
+    }
+    .qz-modal.is-open {
+      opacity: 1; visibility: visible;
+      transition: opacity 320ms var(--ease-out), visibility 0s linear 0s;
+    }
+    /* 不支持 backdrop-filter 的浏览器：压更黑来遮住背后内容 */
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .qz-modal { background: rgba(10, 10, 10, 0.82); }
+    }
+    .qz-panel {
+      width: min(92vw, 40rem);
+      max-height: 86vh;
+      max-height: 86dvh;
+      overflow: hidden;
+      background: var(--surface); color: var(--ink);
+      border: 2px solid var(--ink);
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      display: flex; flex-direction: column; gap: 1.5rem;
+      opacity: 0;
+      transform: translateY(24px) scale(0.965);
+      transition: transform 480ms cubic-bezier(0.16, 1, 0.3, 1), opacity 360ms var(--ease-out);
+      will-change: transform, opacity;
+    }
+    .qz-modal.is-open .qz-panel { opacity: 1; transform: none; }
+
+    /* 每张新卡进场：淡入 + 上移（与全站 reveal 同节奏） */
+    @keyframes qzCardIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .qz-anim-in { animation: qzCardIn 420ms cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+
+    /* 揭晓：答案像“展开”一样出现（轻微模糊→清晰） */
+    @keyframes qzReveal {
+      from { opacity: 0; transform: translateY(10px); filter: blur(4px); }
+      to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    .qz-anim-reveal { animation: qzReveal 480ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+    /* 揭晓后：题干退为次位，视线交给答案 */
+    .qz-dim { opacity: 0.5; transition: opacity 320ms var(--ease-out); }
+
+    /* 考考自己：进度条 */
+    .qz-track { height: 2px; width: 100%; background: rgba(10, 10, 10, 0.14); overflow: hidden; }
+    .qz-track[hidden] { display: none; }
+    .qz-track-fill { display: block; height: 100%; width: 0; background: var(--accent); transition: width 420ms var(--ease-out); }
+    .qz-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+    .qz-head > span { display: flex; gap: 1rem; align-items: baseline; }
+    .qz-title { font-family: var(--font-display); font-size: var(--step-lead); font-weight: 600; letter-spacing: -0.01em; }
+    .qz-close {
+      font: inherit; background: none; border: 0; cursor: pointer;
+      color: var(--muted); font-size: var(--step-body); padding: 0;
+    }
+    .qz-close:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 0.25em; }
+    .qz-modes { display: inline-flex; border: 2px solid var(--ink); width: fit-content; }
+    .qz-mode {
+      font: inherit; font-size: var(--step-small); padding: 0.45rem 0.9rem;
+      background: transparent; border: 0; cursor: pointer; color: var(--ink);
+    }
+    .qz-mode + .qz-mode { border-left: 2px solid var(--ink); }
+    .qz-mode.is-active { background: var(--ink); color: var(--on-dark); }
+    .qz-stage {
+      min-height: 9rem;
+      display: flex; flex-direction: column; gap: 1.25rem;
+      flex: 1 1 auto;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    /* 头部 / 切换 / 按钮 / 进度固定，不随长文被挤压 */
+    .qz-head, .qz-modes, .qz-track, .qz-actions, .qz-progress { flex-shrink: 0; }
+    @media (max-height: 640px) {
+      .qz-panel { gap: 1rem; padding: 1.25rem; }
+      .qz-stage { min-height: 4.5rem; }
+    }
+    .qz-ref {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+      font-weight: 600; line-height: 1.12; letter-spacing: -0.01em;
+    }
+    .qz-text { font-size: var(--step-body); line-height: 1.9; }
+    .qz-text p { margin: 0 0 0.6em; }
+    .qz-text p:last-child { margin-bottom: 0; }
+    .qz-text strong { font-weight: 600; }
+    .qz-hidden { display: none; }
+    .qz-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+    .qz-btn {
+      font: inherit; font-size: var(--step-body); padding: 0.7rem 1.3rem;
+      border: 2px solid var(--ink); background: transparent; color: var(--ink);
+      cursor: pointer;
+      transition: background var(--t-hover) var(--ease-out), color var(--t-hover) var(--ease-out), transform 140ms var(--ease-out);
+    }
+    .qz-btn:hover { background: var(--ink); color: var(--on-dark); transform: translateY(-1px); }
+    .qz-btn:active { transform: translateY(0) scale(0.97); }
+    .qz-btn--accent { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+    .qz-btn--accent:hover { background: var(--accent); color: var(--accent-ink); filter: brightness(1.08); }
+    .qz-progress { font-size: var(--step-small); color: var(--muted); font-variant-numeric: tabular-nums; }
+    .qz-summary { display: flex; flex-direction: column; gap: 1rem; }
+    .qz-score { font-family: var(--font-display); font-size: clamp(2rem, 1.4rem + 2vw, 3rem); font-weight: 600; }
+    .qz-score .qz-num { font-variant-numeric: tabular-nums; }
+    .qz-miss { font-size: var(--step-body); line-height: 1.9; }
+    .qz-miss li { list-style: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .qz-modal, .qz-modal.is-open, .qz-panel, .qz-modal.is-open .qz-panel,
+      .qz-btn, .qz-track-fill { transition: none !important; }
+      .qz-anim-in, .qz-anim-reveal { animation: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -191,6 +320,10 @@
 
   <nav class="nav" aria-label="站内导航">
     <span class="nav-mark">WenCaleb</span>
+    <div class="nav-actions">
+      <button type="button" class="nav-action" id="qz-draw">抽背</button>
+      <button type="button" class="nav-action" id="qz-exam">考考自己</button>
+    </div>
   </nav>
 
   <main id="read">
@@ -289,9 +422,31 @@
       var html = marked.parse(text, { gfm: true, breaks: true });
       article.innerHTML = html;
 
-      /* 段数统计：## 开头的标题数 */
-      var count = (text.match(/^##\s/gm) || []).length;
-      metaEl.textContent = '和合本 · ' + count + ' 段';
+      /* 拆成「段」：每个 ## 标题 + 其下正文，供抽背 / 考考自己使用 */
+      var sections = (function () {
+        var lines = text.split('\n');
+        var secs = [];
+        var cur = null;
+        for (var i = 0; i < lines.length; i++) {
+          var ln = lines[i];
+          if (/^##\s+/.test(ln)) {
+            cur = { ref: ln.replace(/^##\s+/, '').trim(), body: '' };
+            secs.push(cur);
+          } else if (cur) {
+            cur.body += ln + '\n';
+          }
+        }
+        secs.forEach(function (s) {
+          s.body = s.body.trim();
+          /* 题干只留经文出处，去掉「（第X周）」这类排期备注 */
+          s.refClean = s.ref.replace(/[（(]第[^）)]*[）)]/g, '').trim();
+        });
+        return secs;
+      })();
+      window.__RECITE_SECTIONS__ = sections;
+
+      /* 段数统计 */
+      metaEl.textContent = '和合本 · ' + sections.length + ' 段';
 
       article.hidden = false;
       /* reveal 动效由 assets/js/motion.js 统一处理 */
@@ -332,6 +487,295 @@
         if (!window.__motionStarted) document.documentElement.classList.add('motion-off');
       }, 1200);
     });
+  </script>
+
+  <!-- 抽背 / 考考自己 浮窗 -->
+  <div class="qz-modal" id="qz-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="背诵测试">
+    <div class="qz-panel">
+      <div class="qz-head">
+        <span class="qz-title" id="qz-title">抽背</span>
+        <span>
+          <button type="button" class="qz-close" id="qz-exit" hidden>退出</button>
+          <button type="button" class="qz-close" id="qz-close" aria-label="关闭">✕</button>
+        </span>
+      </div>
+      <div class="qz-modes" id="qz-modes" role="group" aria-label="出题方式">
+        <button type="button" class="qz-mode is-active" data-mode="ref">看出处背正文</button>
+        <button type="button" class="qz-mode" data-mode="text">看正文背出处</button>
+      </div>
+      <div class="qz-track" id="qz-track" aria-hidden="true"><span class="qz-track-fill" id="qz-track-fill"></span></div>
+      <div class="qz-stage" id="qz-stage"></div>
+      <div class="qz-actions" id="qz-actions"></div>
+      <div class="qz-progress" id="qz-progress"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var modal = document.getElementById('qz-modal');
+      if (!modal) return;
+      var elTitle = document.getElementById('qz-title');
+      var elExit = document.getElementById('qz-exit');
+      var elModes = document.getElementById('qz-modes');
+      var elStage = document.getElementById('qz-stage');
+      var elActions = document.getElementById('qz-actions');
+      var elProgress = document.getElementById('qz-progress');
+      var elTrack = document.getElementById('qz-track');
+      var elTrackFill = document.getElementById('qz-track-fill');
+
+      var SECTIONS = window.__RECITE_SECTIONS__ || [];
+      var engine = null;     // 'draw'（抽背） | 'exam'（考考自己）
+      var mode = 'ref';      // 'ref'（看出处背正文） | 'text'（看正文背出处）
+      var order = [];        // 考考自己：打乱后的下标序列
+      var idx = 0;
+      var results = [];
+      var drawCount = 0;
+      var lastDraw = -1;
+      var current = null;
+      var busy = false;      // 防止自评按钮被连点导致跳题
+
+      var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function shuffle(a) {
+        a = a.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = a[i]; a[i] = a[j]; a[j] = t;
+        }
+        return a;
+      }
+      function randIndex() {
+        if (SECTIONS.length === 1) return 0;
+        var r;
+        do { r = Math.floor(Math.random() * SECTIONS.length); } while (r === lastDraw);
+        lastDraw = r;
+        return r;
+      }
+
+      function setMode(m) {
+        if (m === mode) return;
+        mode = m;
+        Array.prototype.forEach.call(elModes.children, function (b) {
+          b.classList.toggle('is-active', b.dataset.mode === m);
+        });
+        if (!engine) return;
+        /* 换一种练法 = 开新的一轮：抽背计数归零，考考自己重新洗牌从头开始，
+           避免两种出题方式共用同一份进度 */
+        results = [];
+        idx = 0;
+        drawCount = 0;
+        lastDraw = -1;
+        busy = false;
+        if (engine === 'exam') {
+          order = shuffle(SECTIONS.map(function (_, i) { return i; }));
+        }
+        render();
+      }
+
+      function open(e) {
+        if (!SECTIONS.length) {
+          elStage.innerHTML = '<p class="qz-text">这份清单还没有可背的内容。</p>';
+          elActions.innerHTML = ''; elProgress.textContent = '';
+          elExit.hidden = true;
+          modal.classList.add('is-open');
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+          return;
+        }
+        engine = e; results = []; idx = 0; drawCount = 0; lastDraw = -1;
+        elExit.hidden = (e !== 'draw');
+        elTitle.textContent = (e === 'draw') ? '抽背' : '考考自己';
+        if (e === 'exam') {
+          order = shuffle(SECTIONS.map(function (_, i) { return i; }));
+        }
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        render();
+      }
+      function close() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        engine = null;
+      }
+
+      function render() {
+        busy = false;
+
+        if (engine === 'exam') {
+          current = SECTIONS[order[idx]];
+          elProgress.textContent = '第 ' + (idx + 1) + ' / ' + SECTIONS.length + ' 段';
+          elTrack.hidden = false;
+          elTrackFill.style.width = ((idx + 1) / SECTIONS.length * 100) + '%';
+        } else {
+          current = SECTIONS[randIndex()];
+          elProgress.textContent = '已抽 ' + drawCount + ' 次';
+          elTrack.hidden = true;
+          elTrackFill.style.width = '0';
+        }
+
+        elStage.innerHTML = '';
+        elActions.innerHTML = '';
+
+        var promptEl, answerEl;
+        if (mode === 'ref') {
+          promptEl = document.createElement('div');
+          promptEl.className = 'qz-ref qz-anim-in';
+          promptEl.textContent = current.refClean;
+          answerEl = document.createElement('div');
+          answerEl.className = 'qz-text qz-hidden';
+          answerEl.innerHTML = marked.parse(current.body, { gfm: true, breaks: true });
+        } else {
+          promptEl = document.createElement('div');
+          promptEl.className = 'qz-text qz-anim-in';
+          promptEl.innerHTML = marked.parse(current.body, { gfm: true, breaks: true });
+          answerEl = document.createElement('div');
+          answerEl.className = 'qz-ref qz-hidden';
+          answerEl.textContent = current.refClean;
+        }
+        elStage.appendChild(promptEl);
+        elStage.appendChild(answerEl);
+
+        var revealBtn = document.createElement('button');
+        revealBtn.className = 'qz-btn qz-btn--accent qz-anim-in';
+        revealBtn.style.animationDelay = '60ms';
+        revealBtn.textContent = '揭晓';
+        revealBtn.addEventListener('click', function () {
+          answerEl.classList.remove('qz-hidden');
+          /* 强制一次重排，确保“展开”动画从隐藏态跑起来 */
+          void answerEl.offsetWidth;
+          answerEl.classList.add('qz-anim-reveal');
+          /* 题干退为次位，强调答案 */
+          promptEl.classList.remove('qz-anim-in');
+          promptEl.classList.add('qz-dim');
+          showEval();
+          /* 长经文：把答案滚进可视区（只滚中间的题干区） */
+          requestAnimationFrame(function () {
+            try { answerEl.scrollIntoView({ block: 'nearest' }); } catch (e) {}
+          });
+        });
+        elActions.appendChild(revealBtn);
+        elStage.scrollTop = 0;
+      }
+
+      function showEval() {
+        elActions.innerHTML = '';
+        var ok = document.createElement('button');
+        ok.className = 'qz-btn qz-btn--accent qz-anim-in';
+        ok.textContent = '背出了';
+        var no = document.createElement('button');
+        no.className = 'qz-btn qz-anim-in';
+        no.style.animationDelay = '70ms';
+        no.textContent = '没背出';
+        ok.addEventListener('click', function () { judge(true); });
+        no.addEventListener('click', function () { judge(false); });
+        elActions.appendChild(ok);
+        elActions.appendChild(no);
+      }
+
+      function judge(ok) {
+        if (busy) return;
+        busy = true;
+        if (engine === 'exam') {
+          results.push({ ref: current.refClean, ok: ok });
+        } else {
+          drawCount++;
+        }
+        /* 让按压反馈先被看见，再切下一题 */
+        setTimeout(function () { advance(); }, 130);
+      }
+
+      function advance() {
+        if (engine === 'exam') {
+          if (idx < SECTIONS.length - 1) { idx++; render(); }
+          else { finishExam(); }
+        } else {
+          render();
+        }
+      }
+
+      function countUp(el, to, dur) {
+        if (!el) return;
+        if (REDUCED) { el.textContent = to; return; }
+        var start = null;
+        function step(ts) {
+          if (start === null) start = ts;
+          var p = Math.min((ts - start) / dur, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(to * eased);
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      function finishExam() {
+        busy = false;
+        var total = SECTIONS.length;
+        var got = results.filter(function (r) { return r.ok; }).length;
+        var miss = results.filter(function (r) { return !r.ok; });
+        var pct = total ? Math.round(got / total * 100) : 0;
+
+        elStage.innerHTML = '';
+        elActions.innerHTML = '';
+        elTrack.hidden = false;
+        elTrackFill.style.width = '100%';
+
+        var sum = document.createElement('div');
+        sum.className = 'qz-summary qz-anim-in';
+        var score = document.createElement('div');
+        score.className = 'qz-score';
+        score.innerHTML = '背出 <span class="qz-num" id="qz-num-got">0</span> / ' + total +
+          '（<span class="qz-num" id="qz-num-pct">0</span>%）';
+        sum.appendChild(score);
+
+        var line = document.createElement('p');
+        line.className = 'qz-progress';
+        line.textContent = miss.length ? ('有 ' + miss.length + ' 段还没背熟：') : '全部背出，厉害！';
+        sum.appendChild(line);
+
+        if (miss.length) {
+          var ul = document.createElement('ul');
+          ul.className = 'qz-miss';
+          miss.forEach(function (r) {
+            var li = document.createElement('li');
+            li.textContent = '· ' + r.ref;
+            ul.appendChild(li);
+          });
+          sum.appendChild(ul);
+        }
+        elStage.appendChild(sum);
+        elProgress.textContent = '考试结束';
+
+        countUp(document.getElementById('qz-num-got'), got, 720);
+        countUp(document.getElementById('qz-num-pct'), pct, 720);
+
+        var again = document.createElement('button');
+        again.className = 'qz-btn qz-btn--accent qz-anim-in';
+        again.style.animationDelay = '120ms';
+        again.textContent = '再考一次';
+        var close2 = document.createElement('button');
+        close2.className = 'qz-btn qz-anim-in';
+        close2.style.animationDelay = '160ms';
+        close2.textContent = '关闭';
+        again.addEventListener('click', function () { open('exam'); });
+        close2.addEventListener('click', close);
+        elActions.appendChild(again);
+        elActions.appendChild(close2);
+      }
+
+      document.getElementById('qz-draw').addEventListener('click', function () { open('draw'); });
+      document.getElementById('qz-exam').addEventListener('click', function () { open('exam'); });
+      document.getElementById('qz-close').addEventListener('click', close);
+      elExit.addEventListener('click', close);
+      Array.prototype.forEach.call(elModes.children, function (b) {
+        b.addEventListener('click', function () { setMode(b.dataset.mode); });
+      });
+      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+      });
+    })();
   </script>
 </body>
 </html>
