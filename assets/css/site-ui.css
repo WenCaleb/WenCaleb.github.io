@@ -1,0 +1,94 @@
+/* ============================================================
+   site-ui.css —— 全站共用的「交互层」样式
+   1) Lenis 平滑滚动所需的基础样式
+   2) 页脚 WenCaleb 无限横移跑马灯
+   只新增独立类名，与各页内联 <style> 不冲突。
+   ============================================================ */
+
+/* ---------- 1. Lenis 平滑滚动 ---------- */
+html.lenis,
+html.lenis body { height: auto; }
+
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* ---------- 2. 页脚跑马灯 ---------- */
+
+/* 视差横幅图会被轻微放大（scale 1.12），容器需裁切，否则两侧溢出产生横向滚动条 */
+.band { overflow: hidden; }
+
+/* 页脚是单列 grid，超宽的轨道会参与 max-content 计算把列撑破；
+   强制列宽为 minmax(0, 1fr)，并允许页脚底部收缩，超宽部分交给 .marquee 裁切 */
+.footer { grid-template-columns: minmax(0, 1fr); }
+.footer-bottom { min-width: 0; }
+
+.marquee {
+  --marquee-duration: 26s;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  /* 抵消页脚内边距，做出满幅出血的「无限」感 */
+  margin-inline: calc(var(--margin, 2rem) * -1);
+  margin-bottom: 1.25rem;
+  padding-block: 0.04em;
+  /* 两端轻微渐隐，进出更自然 */
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-x var(--marquee-duration) linear infinite;
+}
+
+.marquee-group {
+  display: flex;
+  flex: none;
+  align-items: baseline;
+}
+
+.marquee-item {
+  font-family: var(--font-display, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif);
+  font-size: clamp(4.5rem, 19vw, 18.75rem);
+  font-weight: 600;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  padding-inline: 0.12em;
+}
+
+.marquee-dot {
+  font-family: var(--font-display, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif);
+  font-size: clamp(2rem, 8vw, 8rem);
+  font-weight: 400;
+  line-height: 1;
+  align-self: center;
+  opacity: 0.4;
+  padding-inline: 0.06em;
+}
+
+@keyframes marquee-x {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* 桌面端悬停减速（暂停），移动端不触发 */
+@media (hover: hover) and (pointer: fine) {
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+}
+
+/* 手机：字号收一档 */
+@media (max-width: 48em) {
+  .marquee { margin-bottom: 1rem; }
+  .marquee-item { font-size: 19vw; }
+  .marquee-dot { font-size: 10vw; }
+}
+
+/* 减少动态：完全静止，作为静态大字展示 */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}

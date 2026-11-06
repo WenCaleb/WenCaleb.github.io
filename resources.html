@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site-ui.css">
   <script>
     /* .js：功能开关；.motion：动效开关（减少动态时不加，页面默认全可见） */
     document.documentElement.classList.add('js');
@@ -18,6 +19,7 @@
   </script>
   <script src="assets/vendor/gsap.min.js" defer></script>
   <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="assets/vendor/lenis.min.js" defer></script>
   <script src="assets/js/motion.js" defer></script>
   <style>
     :root {
@@ -309,7 +311,16 @@
     </ul>
     <div></div>
     <div class="footer-bottom">
-      <p class="footer-wordmark" data-motion="chars">WenCaleb</p>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <div class="marquee-group">
+            <span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span>
+          </div>
+          <div class="marquee-group">
+            <span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span>
+          </div>
+        </div>
+      </div>
       <p class="footer-legal reveal">© 2026 WenCaleb · 照片来自 Unsplash：Todd Quackenbush</p>
     </div>
   </footer>

@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site-ui.css">
   <script>
     /* .js：功能开关；.motion：动效开关（减少动态时不加，页面默认全可见） */
     document.documentElement.classList.add('js');
@@ -17,6 +18,7 @@
     }
   </script>
   <script src="assets/vendor/gsap.min.js" defer></script>
+  <script src="assets/vendor/lenis.min.js" defer></script>
   <script src="assets/js/motion.js" defer></script>
   <style>
     :root {
@@ -370,7 +372,16 @@
       </li>
     </ul>
     <div class="footer-bottom">
-      <p class="footer-wordmark" data-motion="chars">WenCaleb</p>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <div class="marquee-group">
+            <span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span>
+          </div>
+          <div class="marquee-group">
+            <span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span>
+          </div>
+        </div>
+      </div>
       <p class="footer-legal reveal">© 2026 WenCaleb</p>
     </div>
   </footer>
@@ -504,7 +515,7 @@
         <button type="button" class="qz-mode" data-mode="text">看正文背出处</button>
       </div>
       <div class="qz-track" id="qz-track" aria-hidden="true"><span class="qz-track-fill" id="qz-track-fill"></span></div>
-      <div class="qz-stage" id="qz-stage"></div>
+      <div class="qz-stage" id="qz-stage" data-lenis-prevent></div>
       <div class="qz-actions" id="qz-actions"></div>
       <div class="qz-progress" id="qz-progress"></div>
     </div>
@@ -580,6 +591,7 @@
           modal.classList.add('is-open');
           modal.setAttribute('aria-hidden', 'false');
           document.body.style.overflow = 'hidden';
+          if (window.__lenis) window.__lenis.stop();
           return;
         }
         engine = e; results = []; idx = 0; drawCount = 0; lastDraw = -1;
@@ -597,6 +609,7 @@
         modal.classList.remove('is-open');
         modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+        if (window.__lenis) window.__lenis.start();
         engine = null;
       }
 

@@ -9,6 +9,9 @@
  *   [data-parallax]          → 轻微视差（仅桌面）
  *   .preloader               → 首页全屏开场（桌面 ~1.5s；移动端直接跳过）
  *
+ * 滚动引擎：Lenis（assets/vendor/lenis.min.js）。缺失或初始化失败时静默跳过，
+ *   退回浏览器原生滚动；页脚 WenCaleb 跑马灯为纯 CSS 动画，不依赖本脚本。
+ *
  * 降级保证（三层）：
  *   1. 无 JS / prefers-reduced-motion：html 上没有 .motion 类，CSS 默认全部可见，
  *      预载层永不显示，自动轮播不启动；
@@ -35,6 +38,41 @@ window.__motionStarted = true;
   try {
     var hasST = !!window.ScrollTrigger;
     if (hasST) gsap.registerPlugin(ScrollTrigger);
+
+    /* ================================================================
+       第零部分：Lenis 平滑滚动（可选增强）
+       - 脚本缺失 / 初始化报错 → 静默跳过，退回原生滚动，绝不影响内容
+       - 与 ScrollTrigger 打通：Lenis 负责驱动滚动，ST 只同步位置
+       ================================================================ */
+    var lenis = null;
+    if (typeof window.Lenis === 'function') {
+      try {
+        lenis = new window.Lenis({
+          duration: 1.1,
+          smoothWheel: true,
+          wheelMultiplier: 1,
+          touchMultiplier: 1.6
+        });
+        if (hasST) lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+        window.__lenis = lenis; /* 供页内脚本（如复习弹窗）暂停 / 恢复滚动 */
+
+        /* 站内锚点交给 Lenis 平滑滚动；.skip 跳转链接保持原生行为（可访问性） */
+        document.addEventListener('click', function (e) {
+          var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+          if (!a || a.classList.contains('skip')) return;
+          var hash = a.getAttribute('href');
+          if (!hash || hash === '#') return;
+          var target = document.querySelector(hash);
+          if (!target) return;
+          e.preventDefault();
+          lenis.scrollTo(target, { duration: 1.1 });
+        });
+      } catch (err) {
+        lenis = null;
+      }
+    }
 
     var EASE = 'power4.out';
     var INTRO_SCOPE = '.hero, .page-head, .read-head';
