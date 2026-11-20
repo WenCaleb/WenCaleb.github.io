@@ -216,6 +216,14 @@
     }
     .row-value { text-align: right; text-decoration: none; white-space: nowrap; }
     .row-value .arrow { color: var(--muted); }
+    .row-value .arrow .copy-icon { vertical-align: -1px; margin-left: 0.25rem; display: inline-block; }
+    .row-value.is-copied { color: var(--fg); }
+    .copy-toast {
+      position: fixed; left: 50%; bottom: 2rem; transform: translateX(-50%) translateY(0.5rem);
+      background: var(--fg); color: var(--bg); padding: 0.5rem 1rem; font-size: 0.85rem;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 99;
+    }
+    .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     a.row-value:hover { text-decoration: underline; text-underline-offset: 0.25em; }
     .row-value.is-muted { color: var(--muted); }
 
@@ -398,7 +406,7 @@
           <li class="row reveal">
             <span class="row-kind">邮件</span>
             <span class="row-place">QQ 邮箱</span>
-            <a class="row-value" href="mailto:2099302138@qq.com">2099302138@qq.com<span class="arrow" aria-hidden="true"> ↗</span></a>
+            <a class="row-value" href="mailto:2099302138@qq.com" data-copy="2099302138@qq.com" title="点击复制邮箱地址">2099302138@qq.com<span class="arrow" aria-hidden="true"> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></span></a>
           </li>
         </ul>
       </div>
@@ -416,7 +424,6 @@
           <li class="footer-cols-label">本站</li>
           <li>WenCaleb 的个人网站</li>
           <li>建站于 2026 年 10 月</li>
-          <li>托管在 GitHub Pages</li>
         </ul>
       </li>
       <li class="reveal">
@@ -458,7 +465,35 @@
     </div>
   </footer>
 
+  <div class="copy-toast" id="copyToast" role="status">邮箱已复制</div>
+
   <script>
+    (function () {
+      /* —— 点击复制邮箱 —— */
+      var copyLink = document.querySelector('a[data-copy]');
+      if (copyLink) {
+        copyLink.addEventListener('click', function (e) {
+          e.preventDefault();
+          var text = copyLink.getAttribute('data-copy');
+          function done() {
+            var toast = document.getElementById('copyToast');
+            toast.classList.add('show');
+            clearTimeout(done._t);
+            done._t = setTimeout(function () { toast.classList.remove('show'); }, 1500);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { legacy(); });
+          } else { legacy(); }
+          function legacy() {
+            var ta = document.createElement('textarea');
+            ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); done(); } catch (err) {}
+            document.body.removeChild(ta);
+          }
+        });
+      }
+    })();
     (function () {
       /* —— footer 时钟（动效归 assets/js/motion.js 管，这里只管时间） —— */
       var clock = document.getElementById('clock');
