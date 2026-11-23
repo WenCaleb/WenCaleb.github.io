@@ -506,10 +506,7 @@
     <div class="qz-panel">
       <div class="qz-head">
         <span class="qz-title" id="qz-title">抽背</span>
-        <span>
-          <button type="button" class="qz-close" id="qz-exit" hidden>退出</button>
-          <button type="button" class="qz-close" id="qz-close" aria-label="关闭">✕</button>
-        </span>
+        <button type="button" class="qz-close" id="qz-close" aria-label="关闭">✕</button>
       </div>
       <div class="qz-modes" id="qz-modes" role="group" aria-label="出题方式">
         <button type="button" class="qz-mode is-active" data-mode="ref">看出处背正文</button>
@@ -527,7 +524,6 @@
       var modal = document.getElementById('qz-modal');
       if (!modal) return;
       var elTitle = document.getElementById('qz-title');
-      var elExit = document.getElementById('qz-exit');
       var elModes = document.getElementById('qz-modes');
       var elStage = document.getElementById('qz-stage');
       var elActions = document.getElementById('qz-actions');
@@ -588,7 +584,6 @@
         if (!SECTIONS.length) {
           elStage.innerHTML = '<p class="qz-text">这份清单还没有可背的内容。</p>';
           elActions.innerHTML = ''; elProgress.textContent = '';
-          elExit.hidden = true;
           modal.classList.add('is-open');
           modal.setAttribute('aria-hidden', 'false');
           document.body.style.overflow = 'hidden';
@@ -596,7 +591,6 @@
           return;
         }
         engine = e; results = []; idx = 0; drawCount = 0; lastDraw = -1;
-        elExit.hidden = (e !== 'draw');
         elTitle.textContent = (e === 'draw') ? '抽背' : '考考自己';
         if (e === 'exam') {
           order = shuffle(SECTIONS.map(function (_, i) { return i; }));
@@ -782,7 +776,6 @@
       document.getElementById('qz-draw').addEventListener('click', function () { open('draw'); });
       document.getElementById('qz-exam').addEventListener('click', function () { open('exam'); });
       document.getElementById('qz-close').addEventListener('click', close);
-      elExit.addEventListener('click', close);
       Array.prototype.forEach.call(elModes.children, function (b) {
         b.addEventListener('click', function () { setMode(b.dataset.mode); });
       });
