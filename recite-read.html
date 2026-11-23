@@ -450,6 +450,8 @@
           s.body = s.body.trim();
           /* 题干只留经文出处，去掉「（第X周）」这类排期备注 */
           s.refClean = s.ref.replace(/[（(]第[^）)]*[）)]/g, '').trim();
+          /* 去掉正文里的节号（**16** 这种粗体数字），供「看正文背出处」题干用 */
+          s.promptText = s.body.replace(/\*\*(\d+(?:[-–]\d+)?)\*\*\s?/g, '');
         });
         return secs;
       })();
@@ -641,7 +643,8 @@
         } else {
           promptEl = document.createElement('div');
           promptEl.className = 'qz-text qz-anim-in';
-          promptEl.innerHTML = marked.parse(current.body, { gfm: true, breaks: true });
+          /* 看正文背出处：题干用去节号版正文，避免剧透答案 */
+          promptEl.innerHTML = marked.parse(current.promptText, { gfm: true, breaks: true });
           answerEl = document.createElement('div');
           answerEl.className = 'qz-ref qz-hidden';
           answerEl.textContent = current.refClean;
