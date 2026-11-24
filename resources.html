@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>资源 · WenCaleb</title>
-  <meta name="description" content="WenCaleb 攒下的一些好用和有意思的网址。">
+  <meta name="description" content="WenCaleb 攒下的好用工具、GitHub 项目和有意思的网站，可搜索、可筛选。">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23dedad3'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='36' font-weight='600' text-anchor='middle' fill='%230a0a0a'%3EW%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +25,7 @@
     :root {
       --bg: #dedad3;
       --surface: #d3cec6;
+      --surface-hover: #c9c4ba;
       --ink: #0a0a0a;
       --muted: #5c5852;
       --accent: #256f82;
@@ -82,21 +83,18 @@
     }
     .skip:focus { top: 1rem; }
 
-    /* ---------- top bar：纯文本条，wordmark + 少量链接，无任何装饰 ---------- */
+    /* ---------- top bar：纯文本条，与背诵页同款极简 ---------- */
     .nav {
       display: flex; justify-content: space-between; align-items: baseline;
       padding: var(--margin);
       background: var(--bg);
     }
-    .nav-mark { font-size: var(--step-small); font-weight: 500; letter-spacing: 0.01em; text-decoration: none; }
-    .nav-links { display: flex; gap: 1.75rem; font-size: var(--step-body); }
-    .nav-links a { text-decoration: none; white-space: nowrap; }
-    .nav-links a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+    .nav-mark { font-size: var(--step-small); font-weight: 500; letter-spacing: 0.01em; }
 
-    /* ---------- 页头 ---------- */
+    /* ---------- 页头：大标题 + 检索 + 筛选 ---------- */
     .page-head {
       background: var(--bg);
-      padding: clamp(4rem, 10vw, 9rem) var(--margin) clamp(3rem, 7vw, 6rem);
+      padding: clamp(4rem, 10vw, 9rem) var(--margin) clamp(3rem, 6vw, 5rem);
     }
     .page-title {
       font-family: var(--font-display);
@@ -112,11 +110,49 @@
       color: var(--muted);
     }
     .page-note {
-      margin-top: 2.75rem;
+      margin-top: 2.5rem;
       font-size: var(--step-lead);
       line-height: 1.4;
       max-width: 26ch;
     }
+
+    .searchbar {
+      margin-top: 2.75rem;
+      display: flex; align-items: baseline; gap: 1.5rem;
+      max-width: 46rem;
+    }
+    .searchbar input {
+      flex: 1; min-width: 0;
+      background: transparent;
+      border: none; border-bottom: 2px solid var(--ink);
+      border-radius: var(--radius);
+      padding: 0.35em 0;
+      font-family: var(--font-text);
+      font-size: var(--step-lead);
+      color: var(--ink);
+    }
+    .searchbar input::placeholder { color: var(--muted); }
+    .searchbar input:focus { outline: none; border-bottom-color: var(--accent); }
+    .searchbar input:focus-visible { outline: none; }
+    .count { font-size: var(--step-body); color: var(--muted); white-space: nowrap; }
+
+    .chips { margin-top: 1.75rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .chip {
+      padding: 0.35rem 0.9rem;
+      background: var(--surface);
+      color: var(--ink);
+      border: none; border-radius: var(--radius);
+      font-family: var(--font-text);
+      font-size: var(--step-small);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color var(--t-hover) ease, color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+    }
+    .chip:hover { background: var(--surface-hover); }
+    .chip:active { transform: scale(0.96); }
+    .chip.active { background: var(--ink); color: var(--bg); }
+    .chip-sep { width: 1rem; }
+
     .page-action {
       display: none;
       align-items: center;
@@ -134,34 +170,72 @@
     .page-action:hover { background: #262523; }
     .page-action:active { transform: scale(0.97); }
 
-    /* ---------- 分组列表 ---------- */
-    .groups { background: var(--bg); padding-bottom: var(--section); }
-    .group { padding: clamp(2.5rem, 6vw, 5rem) var(--margin) 0; }
-    .group-title {
+    /* ---------- 卡片墙 ---------- */
+    .cards {
+      background: var(--bg);
+      padding: clamp(2.5rem, 6vw, 4.5rem) var(--margin) var(--section);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--gutter);
+    }
+    .card {
+      display: flex; flex-direction: column; gap: 0.7rem;
+      background: var(--surface);
+      padding: 1.5rem;
+      text-decoration: none;
+      transition: background-color var(--t-hover) ease, transform var(--t-hover) var(--ease-out);
+      animation: cardIn 550ms var(--ease-out) backwards;
+      animation-delay: var(--d, 0ms);
+    }
+    .card:hover { background: var(--surface-hover); transform: translateY(-4px); }
+    .card:active { transform: translateY(-1px) scale(0.99); }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(18px); }
+    }
+
+    .card-top { display: flex; align-items: center; gap: 0.75rem; }
+    .mono {
+      width: 3rem; height: 3rem; flex: none;
+      display: grid; place-items: center;
+      background: var(--ink); color: var(--bg);
       font-family: var(--font-display);
-      font-size: clamp(1.75rem, 1.1rem + 2.4vw, 3.25rem);
-      font-weight: 600;
-      line-height: 0.98;
-      letter-spacing: -0.02em;
+      font-size: 1.5rem; font-weight: 600;
     }
-    .group-count { font-weight: 400; font-size: var(--step-body); color: var(--muted); margin-left: 0.75rem; white-space: nowrap; }
-    .group-list {
-      margin-top: 3rem;
-      display: grid;
-      row-gap: 1.625rem;
+    .card-github .mono { background: var(--accent); color: var(--accent-ink); }
+    .badge { font-size: var(--step-small); color: var(--muted); margin-left: auto; }
+
+    .card-name {
+      font-family: var(--font-display);
+      font-size: 1.35rem; font-weight: 600;
+      line-height: 1.2; letter-spacing: -0.01em;
     }
-    .res-row {
-      display: grid;
-      grid-template-columns: minmax(0, 22rem) minmax(0, 1fr) auto;
-      align-items: baseline;
-      column-gap: 1.5rem;
-      font-size: var(--step-body);
+    .card:hover .card-name { text-decoration: underline; text-underline-offset: 0.2em; }
+    .card-desc { line-height: 1.55; }
+    .card-reason {
+      color: var(--muted); line-height: 1.55;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
-    .res-name { font-weight: 500; }
-    .res-desc { color: var(--muted); }
-    .res-url { text-align: right; text-decoration: none; white-space: nowrap; }
-    .res-url .arrow { color: var(--muted); }
-    .res-url:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem 0.9rem; }
+    .card-tags span { font-size: var(--step-small); color: var(--muted); }
+    .card-meta {
+      margin-top: auto; padding-top: 0.5rem;
+      display: flex; flex-wrap: wrap; gap: 0.35rem 0.75rem;
+      font-size: var(--step-small); color: var(--muted);
+    }
+
+    .empty {
+      padding: 0 var(--margin) var(--section);
+      font-size: var(--step-lead); color: var(--muted);
+    }
+    .empty button {
+      background: none; border: none; padding: 0;
+      font: inherit; color: var(--ink); cursor: pointer;
+      text-decoration: underline; text-underline-offset: 0.25em;
+    }
+    .build-hint {
+      padding: 0 var(--margin) var(--section);
+      font-size: var(--step-lead); color: var(--muted); max-width: 30em;
+    }
 
     /* ---------- photo band ---------- */
     .band {
@@ -200,15 +274,6 @@
     .footer-cols a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
     .footer-clock { font-size: var(--step-body); }
     .footer-bottom { align-self: end; }
-    .footer-wordmark {
-      font-family: var(--font-display);
-      font-size: clamp(4.5rem, 19vw, 18.75rem);
-      font-weight: 600;
-      line-height: 0.82;
-      letter-spacing: -0.04em;
-      white-space: nowrap;
-      margin-bottom: 1.25rem;
-    }
     .footer-legal {
       font-size: var(--step-body);
       color: var(--on-dark-muted);
@@ -227,6 +292,8 @@
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
+      .card { animation: none; }
+      .card:hover { transform: none; }
     }
 
     /* ---------- phone ---------- */
@@ -234,13 +301,14 @@
       :root { --margin: 1.25rem; --gutter: 1.25rem; }
       .page-title { font-size: 15vw; }
       .page-note { max-width: 100%; }
-      .res-row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.15rem; }
-      .res-desc { grid-column: 1 / -1; }
-      .res-name { grid-column: 1; }
-      .res-url { grid-column: 2; }
+      .searchbar { flex-direction: column; gap: 0.5rem; max-width: none; }
+      .count { align-self: flex-end; }
+      .cards { grid-template-columns: minmax(0, 1fr); padding-top: 2rem; gap: 1rem; }
       .band img { height: 56svh; }
       .footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2rem; }
-      .footer-wordmark { font-size: 19vw; }
+    }
+    @media (min-width: 48em) and (max-width: 64em) {
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
   </style>
 </head>
@@ -248,27 +316,28 @@
   <a class="skip" href="#res">跳到内容</a>
 
   <nav class="nav" aria-label="站内导航">
-    <a class="nav-mark" href="index.html">WenCaleb</a>
-    <div class="nav-links">
-      <a href="index.html">首页</a>
-      <a href="https://github.com/WenCaleb" target="_blank" rel="noopener">GitHub<span aria-hidden="true"> ↗</span></a>
-    </div>
+    <span class="nav-mark">WenCaleb</span>
   </nav>
 
   <main id="res">
     <section class="page-head">
       <h1 class="page-title" data-motion="chars">RESOURCES</h1>
       <p class="page-sub reveal">资源</p>
-      <p class="page-note reveal">我攒下的一些好用和有意思的网址，<br>顺手记在这里，也给你。</p>
+      <p class="page-note reveal">我攒下的好东西，可搜、可筛。<br>遇到新的，随手记一笔。</p>
+      <div class="searchbar reveal">
+        <input id="q" type="search" placeholder="搜名字、描述、标签…" autocomplete="off" spellcheck="false" aria-label="搜索资源" title="按 / 快速聚焦">
+        <span class="count nums" id="count" aria-live="polite"></span>
+      </div>
+      <div class="chips reveal" id="chips" role="group" aria-label="筛选"></div>
       <button class="page-action reveal" id="random-go" type="button">随机去一个<span aria-hidden="true"> ↗</span></button>
       <noscript>
         <p class="page-note" style="margin-top:2rem">列表需要打开 JavaScript 才能显示。</p>
       </noscript>
     </section>
 
-    <div class="groups" id="groups">
-      <!-- 列表由页面底部脚本根据 RESOURCES 数组渲染 -->
-    </div>
+    <section class="cards" id="grid" aria-label="资源卡片"></section>
+    <div class="empty" id="empty" hidden>没找到。换个词试试，或者 <button type="button" id="clear">清掉所有筛选</button>。</div>
+    <div class="build-hint" id="build-hint" hidden>资源数据还没生成：双击网站文件夹里的 <strong>build.bat</strong>，再刷新这个页面。</div>
 
     <section class="band" aria-hidden="true">
       <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy" data-parallax>
@@ -324,105 +393,174 @@
     </div>
   </footer>
 
+  <script src="assets/fuse.min.js"></script>
+  <script src="resources/data.js"></script>
   <script>
-    /* ================================================================
-       ★ 在这里加你的网址 ★
-
-       每条一个对象，四个字段：
-         group : 分组名（新名字会自动生成一个新分组，
-                 分组顺序按它在下面第一次出现的先后）
-         name  : 网站名
-         desc  : 一句话说明
-         url   : 网址
-
-       加一条就复制一行改内容，别的都不用动。
-       ================================================================ */
-    var RESOURCES = [
-      /* ↓ 以下是示例占位，换成你自己觉得好用的即可 ↓ */
-      { group: "好用工具", name: "Excalidraw",   desc: "手绘风格的白板，画草图、示意图很快", url: "https://excalidraw.com" },
-      { group: "好用工具", name: "Google Fonts", desc: "免费字体库，本站字体也从这来",       url: "https://fonts.google.com" },
-      { group: "好用工具", name: "MoeMail",    desc: "好像挺好用的一个临时邮箱",     url: "https://sall.cc/zh-CN" },
-      { group: "好用工具", name: "Imagefree", desc: "一款免费AI图片生成器",         url: "https://imagefree.net/zh" },
-      { group: "好用工具", name: "MDN Web Docs", desc: "前端文档，遇到不会的就查它",         url: "https://developer.mozilla.org" },
-      { group: "没事逛逛", name: "Neal.fun",     desc: "一堆好玩的小实验和网页小游戏",       url: "https://neal.fun" },
-      { group: "没事逛逛", name: "WindowSwap",   desc: "随机看别人窗外的风景",               url: "https://www.window-swap.com" },
-      { group: "没事逛逛", name: "Radio Garden", desc: "转动地球仪，听世界各地的电台",       url: "https://radio.garden" },
-      { group: "我要学习", name: "learningmusic", desc: "学习音乐创作的基础知识",       url: "https://learningmusic.ableton.com/zh-Hans/index.html" }
-    ];
-
     (function () {
-      /* —— 按数据渲染分组列表 —— */
-      var wrap = document.getElementById('groups');
-      var order = [];
-      var buckets = {};
-      RESOURCES.forEach(function (r) {
-        if (!buckets[r.group]) { buckets[r.group] = []; order.push(r.group); }
-        buckets[r.group].push(r);
-      });
+      'use strict';
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var DATA = window.RESOURCES_DATA;
 
-      order.forEach(function (gname) {
-        var items = buckets[gname];
-        var sec = document.createElement('section');
-        sec.className = 'group reveal';
+      var grid = document.getElementById('grid');
+      var empty = document.getElementById('empty');
+      var hint = document.getElementById('build-hint');
+      var countEl = document.getElementById('count');
+      var chipsEl = document.getElementById('chips');
+      var qInput = document.getElementById('q');
 
-        var h2 = document.createElement('h2');
-        h2.className = 'group-title';
-        h2.textContent = gname;
-        var count = document.createElement('span');
-        count.className = 'group-count nums';
-        count.textContent = items.length + ' 个';
-        h2.appendChild(count);
-        sec.appendChild(h2);
+      if (!DATA || !DATA.length) {
+        hint.hidden = false;
+        document.querySelector('.searchbar').hidden = true;
+        document.getElementById('chips').hidden = true;
+        document.getElementById('random-go').hidden = true;
+      } else {
 
-        var ul = document.createElement('ul');
-        ul.className = 'group-list';
-        items.forEach(function (r, i) {
-          var li = document.createElement('li');
-          li.className = 'res-row reveal';
-
-          var name = document.createElement('span');
-          name.className = 'res-name';
-          name.textContent = r.name;
-
-          var desc = document.createElement('span');
-          desc.className = 'res-desc';
-          desc.textContent = r.desc;
-
-          var a = document.createElement('a');
-          a.className = 'res-url';
-          a.href = r.url;
-          a.target = '_blank';
-          a.rel = 'noopener';
-          try {
-            a.textContent = r.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-          } catch (err) {
-            a.textContent = r.url;
-          }
-          var arrow = document.createElement('span');
-          arrow.className = 'arrow';
-          arrow.setAttribute('aria-hidden', 'true');
-          arrow.textContent = ' ↗';
-          a.appendChild(arrow);
-
-          li.appendChild(name);
-          li.appendChild(desc);
-          li.appendChild(a);
-          ul.appendChild(li);
+        /* —— 搜索索引：Fuse.js 对中文友好（本地自托管，无 CDN 依赖） —— */
+        var fuse = new Fuse(DATA, {
+          keys: ['name', 'desc', 'reason', 'tags'],
+          threshold: 0.35,
+          ignoreLocation: true,
+          minMatchCharLength: 1
         });
-        sec.appendChild(ul);
-        wrap.appendChild(sec);
-      });
 
-      /* —— 随机去一个 —— */
-      var go = document.getElementById('random-go');
-      if (go && RESOURCES.length) {
-        go.addEventListener('click', function () {
-          var pick = RESOURCES[Math.floor(Math.random() * RESOURCES.length)];
+        var state = { q: '', type: 'all', tags: [] };
+
+        /* —— 类型与标签统计 —— */
+        var typeCount = { all: DATA.length, site: 0, github: 0 };
+        var tagCount = {};
+        DATA.forEach(function (e) {
+          typeCount[e.type] = (typeCount[e.type] || 0) + 1;
+          (e.tags || []).forEach(function (t) { tagCount[t] = (tagCount[t] || 0) + 1; });
+        });
+        var tagList = Object.keys(tagCount).sort(function (a, b) {
+          return tagCount[b] - tagCount[a] || a.localeCompare(b, 'zh');
+        });
+
+        var TYPE_LABEL = { all: '全部', site: '网址', github: 'GitHub 项目' };
+
+        function chip(label, active, onClick) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'chip' + (active ? ' active' : '');
+          b.textContent = label;
+          b.addEventListener('click', onClick);
+          return b;
+        }
+
+        function renderChips() {
+          chipsEl.innerHTML = '';
+          ['all', 'site', 'github'].forEach(function (t) {
+            if (t !== 'all' && !typeCount[t]) return;
+            chipsEl.appendChild(chip(TYPE_LABEL[t] + ' ' + typeCount[t], state.type === t, function () {
+              state.type = t; renderChips(); renderList();
+            }));
+          });
+          if (tagList.length) {
+            var sep = document.createElement('span');
+            sep.className = 'chip-sep'; sep.setAttribute('aria-hidden', 'true');
+            chipsEl.appendChild(sep);
+          }
+          tagList.forEach(function (t) {
+            chipsEl.appendChild(chip('#' + t + ' ' + tagCount[t], state.tags.indexOf(t) > -1, function () {
+              var i = state.tags.indexOf(t);
+              if (i > -1) state.tags.splice(i, 1); else state.tags.push(t);
+              renderChips(); renderList();
+            }));
+          });
+        }
+
+        /* —— 卡片 —— */
+        function fmtStars(n) {
+          return n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(n);
+        }
+        function el(tag, cls, text) {
+          var e = document.createElement(tag);
+          if (cls) e.className = cls;
+          if (text !== undefined) e.textContent = text;
+          return e;
+        }
+        function card(e, i) {
+          var a = el('a', 'card' + (e.type === 'github' ? ' card-github' : ''));
+          a.href = e.url; a.target = '_blank'; a.rel = 'noopener';
+          a.style.setProperty('--d', Math.min(i * 45, 450) + 'ms');
+
+          var top = el('div', 'card-top');
+          top.appendChild(el('span', 'mono', e.name.charAt(0).toUpperCase()));
+          top.appendChild(el('span', 'badge', e.type === 'github' ? 'GitHub 项目' : '网址'));
+          a.appendChild(top);
+
+          a.appendChild(el('h2', 'card-name', e.name));
+          if (e.desc) a.appendChild(el('p', 'card-desc', e.desc));
+          if (e.reason && e.reason !== e.desc) a.appendChild(el('p', 'card-reason', e.reason));
+
+          if (e.tags && e.tags.length) {
+            var tags = el('div', 'card-tags');
+            e.tags.forEach(function (t) { tags.appendChild(el('span', null, '#' + t)); });
+            a.appendChild(tags);
+          }
+
+          var meta = el('div', 'card-meta');
+          if (e.added) meta.appendChild(el('span', 'nums', e.added));
+          if (e.stars !== null && e.stars !== undefined) meta.appendChild(el('span', 'nums', '★ ' + fmtStars(e.stars)));
+          if (e.language) meta.appendChild(el('span', null, e.language));
+          if (meta.childNodes.length) a.appendChild(meta);
+
+          return a;
+        }
+
+        function renderList() {
+          var list = state.q ? fuse.search(state.q).map(function (r) { return r.item; }) : DATA.slice();
+          if (state.type !== 'all') {
+            list = list.filter(function (e) { return e.type === state.type; });
+          }
+          if (state.tags.length) {
+            list = list.filter(function (e) {
+              return state.tags.some(function (t) { return (e.tags || []).indexOf(t) > -1; });
+            });
+          }
+
+          grid.innerHTML = '';
+          list.forEach(function (e, i) { grid.appendChild(card(e, i)); });
+
+          countEl.textContent = list.length + ' 条';
+          var none = list.length === 0;
+          empty.hidden = !none;
+          grid.style.display = none ? 'none' : '';
+        }
+
+        /* —— 搜索框：防抖 + / 聚焦 + Esc 清空 —— */
+        var timer = null;
+        qInput.addEventListener('input', function () {
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            state.q = qInput.value.trim();
+            renderList();
+          }, 120);
+        });
+        qInput.addEventListener('keydown', function (ev) {
+          if (ev.key === 'Escape') {
+            qInput.value = ''; state.q = ''; renderList(); qInput.blur();
+          }
+        });
+        document.addEventListener('keydown', function (ev) {
+          if (ev.key === '/' && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) {
+            ev.preventDefault(); qInput.focus();
+          }
+        });
+        document.getElementById('clear').addEventListener('click', function () {
+          qInput.value = ''; state.q = ''; state.type = 'all'; state.tags = [];
+          renderChips(); renderList();
+        });
+
+        /* —— 随机去一个（保留原有彩蛋） —— */
+        document.getElementById('random-go').addEventListener('click', function () {
+          var pick = DATA[Math.floor(Math.random() * DATA.length)];
           window.open(pick.url, '_blank', 'noopener');
         });
-      }
 
-      /* —— reveal 动效由 assets/js/motion.js 统一处理 —— */
+        renderChips();
+        renderList();
+      }
 
       /* —— footer 时钟 —— */
       var clock = document.getElementById('clock');
