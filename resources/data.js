@@ -2,6 +2,41 @@
    资源在 resources/ 文件夹，一条一个 md；或用 add.bat 添加。 */
 window.RESOURCES_DATA = [
   {
+    "id": "盘搜",
+    "name": "盘搜",
+    "type": "github",
+    "url": "https://github.com/fish2018/pansou",
+    "desc": "高性能网盘资源搜索 API 服务，支持 TG 频道与插件扩展多网盘资源检索",
+    "tags": [
+      "网盘",
+      "API",
+      "开源工具",
+      "资源搜索"
+    ],
+    "added": "2026-11-24",
+    "stars": 15363,
+    "language": "Go",
+    "reason": "支持并发搜索、智能结果排序与二级缓存，Docker 一键部署，可对接多种网盘资源源，方便自建网盘搜索服务"
+  },
+  {
+    "id": "build‑your‑own‑x",
+    "name": "build‑your‑own‑x",
+    "type": "github",
+    "url": "https://github.com/codecrafters-io/build-your-own-x",
+    "desc": "大量手把手教程合集，教你从零亲手实现各类软件与技术项目",
+    "tags": [
+      "编程",
+      "教程",
+      "开源",
+      "动手实践",
+      "技术学习"
+    ],
+    "added": "2026-11-24",
+    "stars": 565181,
+    "language": "Markdown",
+    "reason": "汇集海量从零造轮子的学习资料，通过动手实现来深入理解各类技术底层原理。"
+  },
+  {
     "id": "LlamaFactory",
     "name": "LlamaFactory",
     "type": "github",
@@ -18,6 +53,24 @@ window.RESOURCES_DATA = [
     "stars": 76257,
     "language": "Python",
     "reason": "集成 LoRA、QLoRA、DPO、PPO 等主流训练算法，提供 Web 可视化界面，降低大模型微调的上手门槛"
+  },
+  {
+    "id": "ytDownloader",
+    "name": "ytDownloader",
+    "type": "github",
+    "url": "https://github.com/aandrew-me/ytDownloader",
+    "desc": "基于 yt‑dlp 的跨平台开源图形化音视频下载桌面工具，支持数百个网站媒体资源下载",
+    "tags": [
+      "下载工具",
+      "开源",
+      "桌面应用",
+      "音视频",
+      "跨平台"
+    ],
+    "added": "2026-11-24",
+    "stars": 10753,
+    "language": "JavaScript",
+    "reason": "无广告无追踪，支持播放列表、字幕下载与硬件加速压缩，Windows/macOS/Linux 均可直接使用"
   },
   {
     "id": "excalidraw",
