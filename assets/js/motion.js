@@ -262,14 +262,16 @@ window.__motionStarted = true;
         });
       });
 
-      /* —— 图片揭幕：遮罩自下而上 + 内图 scale 归位 —— */
+      /* —— 图片揭幕：遮罩自下而上 + 内图 scale 归位 ——
+         band（[data-parallax] 图）跳过内图 scale：视差的 scale 1.12 与揭幕归位
+         会互相覆盖，band 的呼吸感由 clip 揭幕单独承担 */
       Array.prototype.forEach.call(document.querySelectorAll('.img-reveal'), function (fig) {
         var img = fig.querySelector('img');
         var st = { trigger: fig, start: 'top 85%', once: true };
         gsap.fromTo(fig, { clipPath: 'inset(0 0 100% 0)' }, {
           clipPath: 'inset(0 0 0% 0)', duration: 1.15, ease: 'power4.inOut', scrollTrigger: st
         });
-        if (img) {
+        if (img && !fig.hasAttribute('data-parallax')) {
           gsap.fromTo(img, { scale: 1.18 }, {
             scale: 1, duration: 1.6, ease: 'power3.out',
             scrollTrigger: { trigger: fig, start: 'top 85%', once: true }
@@ -277,12 +279,15 @@ window.__motionStarted = true;
         }
       });
 
-      /* —— 轻微视差：仅桌面（移动端关闭，约束 Q8） —— */
+      /* —— 轻微视差：仅桌面（移动端关闭，约束 Q8）。
+         标记在容器上（band / [data-parallax]），对容器内的 img 做缩放漂移，
+         避免对 position:fixed 叠层生效 —— 元素本身是视口固定的，位移无意义 */
       if (desk) {
-        Array.prototype.forEach.call(document.querySelectorAll('[data-parallax]'), function (img) {
-          gsap.fromTo(img, { yPercent: -5, scale: 1.12 }, {
+        Array.prototype.forEach.call(document.querySelectorAll('[data-parallax]'), function (fig) {
+          var target = fig.querySelector('img') || fig;
+          gsap.fromTo(target, { yPercent: -5, scale: 1.12 }, {
             yPercent: 5, scale: 1.12, ease: 'none',
-            scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
+            scrollTrigger: { trigger: fig, start: 'top bottom', end: 'bottom top', scrub: true }
           });
         });
       }

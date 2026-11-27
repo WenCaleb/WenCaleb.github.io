@@ -21,6 +21,7 @@
   <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
   <script src="assets/vendor/lenis.min.js" defer></script>
   <script src="assets/js/motion.js" defer></script>
+  <script src="assets/js/cursor.js" defer></script>
   <style>
     :root {
       --bg: #dedad3;
@@ -101,6 +102,12 @@
       transition: opacity 1.6s ease;
     }
     .hero-img.is-active { opacity: 1; }
+    /* S2：三张轮播图各自 16s 慢呼吸（scale 1↔1.07 往复），切图的 1.6s 交叉淡入淡出盖住相位差 */
+    .motion .hero-img { animation: hero-breathe 16s ease-in-out infinite alternate; }
+    @keyframes hero-breathe {
+      from { transform: scale(1); }
+      to { transform: scale(1.07); }
+    }
     .hero-scrim {
       position: absolute; inset: 0;
       background: linear-gradient(to top, rgba(10, 10, 10, 0.72) 0%, rgba(10, 10, 10, 0.5) 100%); /* taste-skill-ignore: neutral scrim over photo, the one sanctioned exception */
@@ -343,6 +350,8 @@
   </style>
 </head>
 <body>
+  <div class="cur-dot" aria-hidden="true"><span class="cur-dot-i"></span></div>
+  <div class="grain" aria-hidden="true"></div>
   <a class="skip" href="#links">跳到链接</a>
 
   <div class="preloader" aria-hidden="true">
@@ -368,7 +377,7 @@
       <div class="hero-card">
         <span class="hero-wordmark reveal">WenCaleb</span>
         <p class="hero-note reveal">WenCaleb 的个人网站<br>刚建好，内容在路上</p>
-        <a class="hero-action reveal" href="https://github.com/WenCaleb" target="_blank" rel="noopener">在 GitHub 上找到我</a>
+        <a class="hero-action reveal" data-magnet href="https://github.com/WenCaleb" target="_blank" rel="noopener">在 GitHub 上找到我</a>
       </div>
     </div>
 
@@ -412,9 +421,9 @@
       </div>
     </section>
 
-    <section class="band" aria-hidden="true">
-      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy" data-parallax>
-    </section>
+    <figure class="band img-reveal" data-parallax aria-hidden="true">
+      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy">
+    </figure>
   </main>
 
   <footer class="footer">

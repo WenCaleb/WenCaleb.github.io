@@ -21,6 +21,7 @@
   <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
   <script src="assets/vendor/lenis.min.js" defer></script>
   <script src="assets/js/motion.js" defer></script>
+  <script src="assets/js/cursor.js" defer></script>
   <style>
     :root {
       --bg: #dedad3;
@@ -167,7 +168,7 @@
       transition: background-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
     }
     .js .page-action { display: inline-flex; }
-    .page-action:hover { background: #262523; }
+    .page-action:hover { background: #2c2b28; }
     .page-action:active { transform: scale(0.97); }
 
     /* ---------- 卡片墙 ---------- */
@@ -189,6 +190,7 @@
     }
     .card:hover { background: var(--surface-hover); transform: translateY(-4px); }
     .card:active { transform: translateY(-1px) scale(0.99); }
+    .card:hover:active { transform: translateY(-2px) scale(0.995); }
     @keyframes cardIn {
       from { opacity: 0; transform: translateY(18px); }
     }
@@ -244,6 +246,7 @@
       line-height: 0;
     }
     .band img {
+      position: relative;
       width: 100%;
       height: min(70svh, 52rem);
       object-fit: cover;
@@ -313,6 +316,8 @@
   </style>
 </head>
 <body>
+  <div class="cur-dot" aria-hidden="true"><span class="cur-dot-i"></span></div>
+  <div class="grain" aria-hidden="true"></div>
   <a class="skip" href="#res">跳到内容</a>
 
   <nav class="nav" aria-label="站内导航">
@@ -329,7 +334,7 @@
         <span class="count nums" id="count" aria-live="polite"></span>
       </div>
       <div class="chips reveal" id="chips" role="group" aria-label="筛选"></div>
-      <button class="page-action reveal" id="random-go" type="button">随机去一个<span aria-hidden="true"> ↗</span></button>
+      <button class="page-action reveal" id="random-go" data-magnet type="button">随机去一个<span aria-hidden="true"> ↗</span></button>
       <noscript>
         <p class="page-note" style="margin-top:2rem">列表需要打开 JavaScript 才能显示。</p>
       </noscript>
@@ -339,9 +344,9 @@
     <div class="empty" id="empty" hidden>没找到。换个词试试，或者 <button type="button" id="clear">清掉所有筛选</button>。</div>
     <div class="build-hint" id="build-hint" hidden>资源数据还没生成：双击网站文件夹里的 <strong>build.bat</strong>，再刷新这个页面。</div>
 
-    <section class="band" aria-hidden="true">
-      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy" data-parallax>
-    </section>
+    <figure class="band img-reveal" data-parallax aria-hidden="true">
+      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy">
+    </figure>
   </main>
 
   <footer class="footer">
