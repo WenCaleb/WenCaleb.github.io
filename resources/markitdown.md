@@ -3,7 +3,7 @@ name: markitdown
 type: github
 url: https://github.com/microsoft/markitdown
 desc: 微软开源 Python 工具，可将 PDF、Office、图片、网页等多种文件转换为 Markdown，适配大模型文档解析流水线
-tags: [python, 文档转换, markdown, ai 工具, 开源, 微软]
+tags: [Python, 文档转换, markdown, AI 工具, 开源, 微软]
 added: 2026-11-25
 ---
 

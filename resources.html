@@ -447,6 +447,9 @@
           return b;
         }
 
+        var CHIP_MIN = 3;
+        var tagsExpanded = false;
+
         function renderChips() {
           chipsEl.innerHTML = '';
           ['all', 'site', 'github'].forEach(function (t) {
@@ -455,18 +458,27 @@
               state.type = t; renderChips(); renderList();
             }));
           });
-          if (tagList.length) {
+          var shown = tagList.filter(function (t) { return tagsExpanded || tagCount[t] >= CHIP_MIN || state.tags.indexOf(t) > -1; });
+          if (shown.length) {
             var sep = document.createElement('span');
             sep.className = 'chip-sep'; sep.setAttribute('aria-hidden', 'true');
             chipsEl.appendChild(sep);
           }
-          tagList.forEach(function (t) {
+          shown.forEach(function (t) {
             chipsEl.appendChild(chip('#' + t + ' ' + tagCount[t], state.tags.indexOf(t) > -1, function () {
               var i = state.tags.indexOf(t);
               if (i > -1) state.tags.splice(i, 1); else state.tags.push(t);
               renderChips(); renderList();
             }));
           });
+          if (tagList.length > shown.length) {
+            var toggle = document.createElement('button');
+            toggle.type = 'button';
+            toggle.className = 'chip';
+            toggle.textContent = tagsExpanded ? '收起标签' : '展开全部 ' + (tagList.length - shown.length) + ' 个';
+            toggle.addEventListener('click', function () { tagsExpanded = !tagsExpanded; renderChips(); });
+            chipsEl.appendChild(toggle);
+          }
         }
 
         /* —— 卡片 —— */

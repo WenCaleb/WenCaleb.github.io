@@ -200,7 +200,7 @@ window.RESOURCES_DATA = [
     "url": "https://github.com/farion1231/cc-switch",
     "desc": "Tauri 构建的跨平台桌面工具，统一管理 Claude Code、Codex、Gemini CLI 等 AI 编程 CLI 的服务商、MCP 与技能配置",
     "tags": [
-      "ai",
+      "AI",
       "开发工具",
       "桌面应用",
       "mcp",
@@ -254,7 +254,7 @@ window.RESOURCES_DATA = [
     "url": "https://github.com/musistudio/claude-code-router",
     "desc": "本地 AI 编码智能体网关控制平面，统一多模型服务商，实现请求路由、故障降级、工具编排与调用观测",
     "tags": [
-      "ai",
+      "AI",
       "编码智能体",
       "网关",
       "mcp",
@@ -584,10 +584,10 @@ window.RESOURCES_DATA = [
     "url": "https://github.com/microsoft/markitdown",
     "desc": "微软开源 Python 工具，可将 PDF、Office、图片、网页等多种文件转换为 Markdown，适配大模型文档解析流水线",
     "tags": [
-      "python",
+      "Python",
       "文档转换",
       "markdown",
-      "ai 工具",
+      "AI 工具",
       "开源",
       "微软"
     ],
@@ -689,9 +689,9 @@ window.RESOURCES_DATA = [
     "url": "https://github.com/Yeachan-Heo/oh-my-codex",
     "desc": "OpenAI Codex CLI 的开源工作流增强层，提供钩子、智能体团队、HUD 界面，强化编码智能体工作能力",
     "tags": [
-      "ai",
+      "AI",
       "编码智能体",
-      "cli",
+      "CLI",
       "开发工具"
     ],
     "added": "2026-11-25",
@@ -706,7 +706,7 @@ window.RESOURCES_DATA = [
     "url": "https://github.com/anomalyco/opencode",
     "desc": "开源 AI 编码智能体，基于终端 TUI 界面，可对接多种大模型完成代码编写、分析与项目改造任务。",
     "tags": [
-      "ai",
+      "AI",
       "编码助手",
       "开源",
       "终端工具",
@@ -760,7 +760,7 @@ window.RESOURCES_DATA = [
     "url": "https://github.com/microsoft/PowerToys",
     "desc": "微软开源的 Windows 系统工具集，集成多款小工具用于提升系统自定义能力与操作效率。",
     "tags": [
-      "windows",
+      "Windows",
       "开源",
       "效率工具",
       "系统工具",
@@ -970,10 +970,10 @@ window.RESOURCES_DATA = [
     "url": "https://github.com/ValueCell-ai/valuecell",
     "desc": "社区驱动的金融多智能体开源平台，支持选股、研究、跟踪与交易相关 AI 智能体能力。",
     "tags": [
-      "ai",
+      "AI",
       "多智能体",
       "量化金融",
-      "python",
+      "Python",
       "投资",
       "开源"
     ],
@@ -1009,7 +1009,7 @@ window.RESOURCES_DATA = [
     "tags": [
       "浏览器扩展",
       "gemini",
-      "ai 工具",
+      "AI 工具",
       "开源",
       "chrome 扩展"
     ],

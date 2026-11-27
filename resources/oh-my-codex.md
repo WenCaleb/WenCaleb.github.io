@@ -3,7 +3,7 @@ name: oh-my-codex
 type: github
 url: https://github.com/Yeachan-Heo/oh-my-codex
 desc: OpenAI Codex CLI 的开源工作流增强层，提供钩子、智能体团队、HUD 界面，强化编码智能体工作能力
-tags: [ai, 编码智能体, cli, 开发工具]
+tags: [AI, 编码智能体, CLI, 开发工具]
 added: 2026-11-25
 ---
 
