@@ -155,7 +155,11 @@
       background: var(--ink);
       color: var(--on-dark);
       display: grid;
-      grid-template-rows: auto 1fr auto;
+      /* 三行全 auto（各自按内容自然高度），min-height 富余用 align-content:space-between
+         分布到行间。绝不用 1fr 行吸收富余——1fr 行会被 min-height 压到小于
+         大字实际高度，中间 wordmark 就溢出该行、和上下元素互相遮住。 */
+      grid-template-rows: auto auto auto;
+      align-content: space-between;
       padding: var(--margin);
     }
     .footer-cols {
@@ -171,15 +175,6 @@
     .footer-cols a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
     .footer-clock { font-size: var(--step-body); }
     .footer-bottom { align-self: end; }
-    .footer-wordmark {
-      font-family: var(--font-display);
-      font-size: clamp(4.5rem, 19vw, 18.75rem);
-      font-weight: 600;
-      line-height: 0.82;
-      letter-spacing: -0.04em;
-      white-space: nowrap;
-      margin-bottom: 1.25rem;
-    }
     .footer-legal {
       font-size: var(--step-body);
       color: var(--on-dark-muted);
@@ -261,20 +256,22 @@
         <ul>
           <li class="footer-cols-label">时间</li>
           <li>北京时间</li>
-          <li class="footer-clock nums" id="clock">--:--:--</li>
+          <li class="footer-clock nums" id="clock" data-clock-flip>--:--:--</li>
           <li class="footer-date nums" id="date">----年--月--日</li>
         </ul>
       </li>
     </ul>
-    <div></div>
+    <div class="footer-wordmark-wrap" aria-hidden="true">
+      <div class="footer-wordmark" data-scramble>WenCaleb</div>
+    </div>
     <div class="footer-bottom">
-      <div class="marquee" aria-hidden="true">
-        <div class="marquee-track">
-          <div class="marquee-group">
-            <span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span>
+      <div class="marquee" data-marquee-duration="36" aria-hidden="true">
+        <div class="marquee-track motion">
+          <div class="marquee-group" data-marquee-items="RECITE,背诵,WenCaleb,复习">
+            <span class="marquee-item">RECITE</span><span class="marquee-dot">·</span><span class="marquee-item">背诵</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">复习</span><span class="marquee-dot">·</span>
           </div>
           <div class="marquee-group">
-            <span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span>
+            <span class="marquee-item">RECITE</span><span class="marquee-dot">·</span><span class="marquee-item">背诵</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">复习</span><span class="marquee-dot">·</span>
           </div>
         </div>
       </div>

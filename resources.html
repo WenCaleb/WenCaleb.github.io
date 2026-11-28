@@ -261,7 +261,11 @@
       background: var(--ink);
       color: var(--on-dark);
       display: grid;
-      grid-template-rows: auto 1fr auto;
+      /* 三行全 auto（各自按内容自然高度），min-height 富余用 align-content:space-between
+         分布到行间。绝不用 1fr 行吸收富余——1fr 行会被 min-height 压到小于
+         大字实际高度，中间 wordmark 就溢出该行、和上下元素互相遮住。 */
+      grid-template-rows: auto auto auto;
+      align-content: space-between;
       padding: var(--margin);
     }
     .footer-cols {
@@ -345,7 +349,11 @@
     <div class="build-hint" id="build-hint" hidden>资源数据还没生成：双击网站文件夹里的 <strong>build.bat</strong>，再刷新这个页面。</div>
 
     <figure class="band img-reveal" data-parallax aria-hidden="true">
-      <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy">
+      <picture>
+        <source type="image/avif" srcset="assets/band-1-480w.avif 480w, assets/band-1-768w.avif 768w, assets/band-1-1200w.avif 1200w, assets/band-1-1600w.avif 1600w, assets/band-1-2400w.avif 2400w" sizes="100vw">
+        <source type="image/webp" srcset="assets/band-1-480w.webp 480w, assets/band-1-768w.webp 768w, assets/band-1-1200w.webp 1200w, assets/band-1-1600w.webp 1600w, assets/band-1-2400w.webp 2400w" sizes="100vw">
+        <img src="assets/band-1.jpg" alt="" width="2400" height="1350" loading="lazy" decoding="async">
+      </picture>
     </figure>
   </main>
 
@@ -378,19 +386,21 @@
         <ul>
           <li class="footer-cols-label">时间</li>
           <li>北京时间</li>
-          <li class="footer-clock nums" id="clock">--:--:--</li>
+          <li class="footer-clock nums" id="clock" data-clock-flip>--:--:--</li>
         </ul>
       </li>
     </ul>
-    <div></div>
+    <div class="footer-wordmark-wrap" aria-hidden="true">
+      <div class="footer-wordmark" data-scramble>WenCaleb</div>
+    </div>
     <div class="footer-bottom">
-      <div class="marquee" aria-hidden="true">
-        <div class="marquee-track">
-          <div class="marquee-group">
-            <span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span>
+      <div class="marquee" data-marquee-duration="36" aria-hidden="true">
+        <div class="marquee-track motion">
+          <div class="marquee-group" data-marquee-items="RESOURCES,资源,WenCaleb,备份">
+            <span class="marquee-item">RESOURCES</span><span class="marquee-dot">·</span><span class="marquee-item">资源</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">备份</span><span class="marquee-dot">·</span>
           </div>
           <div class="marquee-group">
-            <span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span>
+            <span class="marquee-item">RESOURCES</span><span class="marquee-dot">·</span><span class="marquee-item">资源</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">备份</span><span class="marquee-dot">·</span>
           </div>
         </div>
       </div>

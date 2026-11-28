@@ -45,6 +45,12 @@ html.lenis body { height: auto; }
   animation: marquee-x var(--marquee-duration) linear infinite;
 }
 
+/* .marquee-track 在 HTML 里预标记 .motion（GSAP 认领）：
+   html.motion 存在时关闭 CSS 循环，轨道由 GSAP xPercent 驱动，避免双驱动；
+   降级路径（JS 把 .motion 从轨道上撤掉 / .motion-off 兜底）CSS 循环自动恢复 */
+.motion .marquee-track.motion { animation: none; }
+.motion-off .marquee-track.motion { animation: marquee-x var(--marquee-duration) linear infinite; }
+
 .marquee-group {
   display: flex;
   flex: none;
@@ -76,9 +82,18 @@ html.lenis body { height: auto; }
   to   { transform: translate3d(-50%, 0, 0); }
 }
 
-/* 桌面端悬停减速（暂停），移动端不触发 */
+/* .motion 但 GSAP/ST 没接管成功时的兜底（.motion-off 由各页内联规则覆盖，
+   这里补一个 !important，防止某页内联缺少对应规则时内容被卡住） */
+.motion-off .reveal,
+.motion-off .char,
+.motion-off .line { opacity: 1 !important; transform: none !important; }
+.motion-off .img-reveal { clip-path: none !important; }
+
+/* 桌面端悬停减速（暂停）：只作用于 CSS 兜底路径（轨道未被 GSAP 接管时）；
+   GSAP 接管的轨道由 motion.js 用 timeScale 平滑减速，硬暂停会打架 */
 @media (hover: hover) and (pointer: fine) {
-  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee:hover .marquee-track:not(.motion),
+  .motion-off .marquee:hover .marquee-track { animation-play-state: paused; }
 }
 
 /* 手机：字号收一档 */
@@ -88,9 +103,9 @@ html.lenis body { height: auto; }
   .marquee-dot { font-size: 10vw; }
 }
 
-/* 减少动态：完全静止，作为静态大字展示 */
+/* 减少动态：完全静止，作为静态大字展示（!important 压过 GSAP 接管路径的类名规则） */
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
+  .marquee-track { animation: none !important; }
 }
 
 /* ---------- 3. 胶片颗粒叠层（assets/grain.png，96px 平铺） ---------- */
@@ -110,7 +125,49 @@ html.lenis body { height: auto; }
   .grain { animation: none !important; }
 }
 
-/* ---------- 4. 增强型光标：系统光标保留，小圆点跟手（差异混合，深浅底都可见） ---------- */
+/* ---------- 4. 页脚巨型 wordmark（scramble 解码目标，[data-scramble]） ---------- */
+/* 各页内联的 .footer-wordmark 规则保留原有字体/字号/行距，这里只补定位 */
+.footer-wordmark-wrap {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  align-self: end; /* footer 是 auto auto auto 三行：wrap 顶到 footer-bottom（marquee）上沿，与四列之间留出自然空隙，不再 1fr 挤压/越界 */
+}
+.footer-wordmark {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  overflow: hidden; /* scramble 期间字符宽度抖动不外溢 */
+  font-family: var(--font-display, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif);
+  font-size: clamp(4.5rem, 19vw, 18.75rem);
+  font-weight: 600;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  margin-bottom: 1.25rem;
+}
+/* 解码期间逐字 span 是 inline-block：white-space 继承 nowrap，保持单行 */
+
+/* ---------- 5. 表格行微交互（gsap.com 式克制的 hover 反馈） ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .row {
+    transition: background-color 0.25s ease;
+  }
+  .row:hover {
+    background-color: rgba(10, 10, 10, 0.035); /* 浅色底上的微变，克制的 hover 反馈 */
+  }
+  .row a.row-value .arrow {
+    display: inline-block;
+    transition: transform 0.25s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+                color 0.25s ease;
+  }
+  a.row-value:hover .arrow {
+    transform: translateX(4px);
+    color: var(--accent, currentColor);
+  }
+}
+
+/* ---------- 6. 增强型光标：系统光标保留，小圆点跟手（差异混合，深浅底都可见） ---------- */
 .cur-dot {
   position: fixed; left: 0; top: 0;
   width: 10px; height: 10px; z-index: 999;

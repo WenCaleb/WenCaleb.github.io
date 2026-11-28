@@ -31,7 +31,7 @@ window.RESOURCES_DATA = [
       "免费工具"
     ],
     "added": "2026-11-25",
-    "stars": 115389,
+    "stars": 115439,
     "language": "Python",
     "reason": "需要社媒内容的 agent 任务用它替代付费 API，省一大笔钱，接入也简单。"
   },
@@ -48,7 +48,7 @@ window.RESOURCES_DATA = [
       "开发工具"
     ],
     "added": "2026-11-25",
-    "stars": 42992,
+    "stars": 42996,
     "language": "Python",
     "reason": "工具换来换去技能跟着走，一份维护多平台可用，写得很工程化。"
   },
@@ -63,7 +63,7 @@ window.RESOURCES_DATA = [
       "编码规范"
     ],
     "added": "2026-11-25",
-    "stars": 236229,
+    "stars": 236313,
     "language": "",
     "reason": "约束 AI 输出更简洁可靠的代码，降低过度设计与失误概率"
   },
@@ -81,7 +81,7 @@ window.RESOURCES_DATA = [
       "Agent"
     ],
     "added": "2026-11-25",
-    "stars": 41563,
+    "stars": 41565,
     "language": "Python",
     "reason": "官方参考实现，做金融域 agent 时先看它怎么组织工作流，少走弯路。"
   },
@@ -98,7 +98,7 @@ window.RESOURCES_DATA = [
       "官方"
     ],
     "added": "2026-11-25",
-    "stars": 201545,
+    "stars": 201626,
     "language": "Python",
     "reason": "想写自己的 skill 或搞懂 skill 格式，从官方仓库入手最准。"
   },
@@ -133,7 +133,7 @@ window.RESOURCES_DATA = [
       "学习资料"
     ],
     "added": "2026-11-25",
-    "stars": 543985,
+    "stars": 544067,
     "language": "",
     "reason": "汇聚数百个细分领域精选清单，覆盖编程、安全、硬件等众多方向，是探索技术资源的绝佳入口。"
   },
@@ -151,8 +151,8 @@ window.RESOURCES_DATA = [
       "学习"
     ],
     "added": "2026-11-25",
-    "stars": null,
-    "language": "",
+    "stars": 145983,
+    "language": "Python",
     "reason": "快速了解“LLM 应用能做什么”的最佳入口，每个例子都能直接跑。"
   },
   {
@@ -171,7 +171,7 @@ window.RESOURCES_DATA = [
       "工具"
     ],
     "added": "2026-11-25",
-    "stars": null,
+    "stars": 36389,
     "language": "",
     "reason": "汇集业内研究者实测模板，可直接用于大模型或 Cursor、Claude Code，显著提升科研论文撰写与修改效率"
   },
@@ -189,7 +189,7 @@ window.RESOURCES_DATA = [
       "开发工具"
     ],
     "added": "2026-11-25",
-    "stars": 123331,
+    "stars": 123358,
     "language": "Go",
     "reason": "“原始人模式”用 AI 编程，一句话大幅降低上下文开销，适合 token 预算紧张或想省订阅额度的场景。"
   },
@@ -208,7 +208,7 @@ window.RESOURCES_DATA = [
       "配置管理"
     ],
     "added": "2026-11-25",
-    "stars": 157671,
+    "stars": 157714,
     "language": "Rust",
     "reason": "可视化界面一键切换模型服务商，统一管控 MCP 服务与提示词，免除手动修改各类配置文件的繁琐操作"
   },
@@ -226,8 +226,8 @@ window.RESOURCES_DATA = [
       "网络"
     ],
     "added": "2026-11-25",
-    "stars": null,
-    "language": "",
+    "stars": 310,
+    "language": "Go",
     "reason": "iOS/macOS 上用 NE 内核比第三方壳更稳，源码开放可审查。"
   },
   {
@@ -243,7 +243,7 @@ window.RESOURCES_DATA = [
       "iOS"
     ],
     "added": "2026-11-25",
-    "stars": 493,
+    "stars": 495,
     "language": "Swift",
     "reason": "现有 Clash 配置无缝迁移，原生应用性能和体验都更好。"
   },
@@ -279,7 +279,7 @@ window.RESOURCES_DATA = [
       "工具"
     ],
     "added": "2026-11-25",
-    "stars": 120228,
+    "stars": 120264,
     "language": "TypeScript",
     "reason": "解决代理“失忆”问题，项目越老上下文交接越顺，不用每次重讲一遍背景。"
   },
@@ -296,7 +296,7 @@ window.RESOURCES_DATA = [
       "本地工具"
     ],
     "added": "2026-11-25",
-    "stars": 78958,
+    "stars": 78983,
     "language": "TypeScript",
     "reason": "大项目里 agent 乱翻代码烧钱，装上它让代理“问一句就知道在哪”，效率明显提升。"
   },
@@ -313,7 +313,7 @@ window.RESOURCES_DATA = [
       "Rust"
     ],
     "added": "2026-11-25",
-    "stars": 33405,
+    "stars": 33409,
     "language": "Rust",
     "reason": "深度使用 Codex 的用户可以直接装上获得更舒服的交互，不用折腾配置。"
   },
@@ -347,7 +347,7 @@ window.RESOURCES_DATA = [
       "工具"
     ],
     "added": "2026-11-25",
-    "stars": 19181,
+    "stars": 19185,
     "language": "Ruby",
     "reason": "需要电子合同但又不想付 SaaS 钱的团队，自己部署一套即可。"
   },
@@ -364,7 +364,7 @@ window.RESOURCES_DATA = [
       "AI"
     ],
     "added": "2026-11-25",
-    "stars": 20530,
+    "stars": 20531,
     "language": "JavaScript",
     "reason": "系统了解 AI 编程入门的好材料，中文、免费、门槛低。"
   },
@@ -381,7 +381,7 @@ window.RESOURCES_DATA = [
       "开发工具"
     ],
     "added": "2026-11-25",
-    "stars": 311906,
+    "stars": 312019,
     "language": "JavaScript",
     "reason": "系统性地优化 agent 的行为与产出质量，长期项目里能明显减少重复犯错。"
   },
@@ -398,7 +398,7 @@ window.RESOURCES_DATA = [
       "网络"
     ],
     "added": "2026-11-25",
-    "stars": 58295,
+    "stars": 58301,
     "language": "Kotlin",
     "reason": "找成熟的代理工具就看这一个入口，清单维护多年、覆盖面全。"
   },
@@ -450,7 +450,7 @@ window.RESOURCES_DATA = [
       "工具"
     ],
     "added": "2026-11-25",
-    "stars": 154296,
+    "stars": 154343,
     "language": "Python",
     "reason": "比向量 RAG 更可解释、可追溯，适合需要反复深度提问项目架构的场景。"
   },
@@ -467,8 +467,8 @@ window.RESOURCES_DATA = [
       "Mac"
     ],
     "added": "2026-11-25",
-    "stars": 24874,
-    "language": "Swift",
+    "stars": null,
+    "language": "",
     "reason": "多家 AI 订阅都能在一个入口里派活，把已付费的订阅价值榨干。"
   },
   {
@@ -504,7 +504,7 @@ window.RESOURCES_DATA = [
       "工具"
     ],
     "added": "2026-11-25",
-    "stars": 74364,
+    "stars": 74411,
     "language": "Python",
     "reason": "适配多款 AI 编码写作 Agent，可弱化 AI 写作痕迹，让生成文稿行文更加自然流畅"
   },
@@ -520,7 +520,7 @@ window.RESOURCES_DATA = [
       "生产力"
     ],
     "added": "2026-11-25",
-    "stars": 62790,
+    "stars": 62813,
     "language": "Python",
     "reason": "受够了 AI 长篇大论先把结论放最后的人装上就舒服了，回答直接给重点。"
   },
@@ -537,7 +537,7 @@ window.RESOURCES_DATA = [
       "生产力"
     ],
     "added": "2026-11-25",
-    "stars": 22630,
+    "stars": 22634,
     "language": "Python",
     "reason": "中文圈的 skill 合集里写作相关的是亮点，想让 AI 有质感的文笔可以从这里起步。"
   },
@@ -555,7 +555,7 @@ window.RESOURCES_DATA = [
       "Claude Code"
     ],
     "added": "2026-11-25",
-    "stars": 42560,
+    "stars": 42633,
     "language": "Go",
     "reason": "同一个代理自由切换多家模型，成本更低也不被单一供应商绑定，Mac 党尤其顺手。"
   },
@@ -573,7 +573,7 @@ window.RESOURCES_DATA = [
       "工具"
     ],
     "added": "2026-11-25",
-    "stars": 41344,
+    "stars": 41356,
     "language": "Python",
     "reason": "查找自己的数字足迹、找回账号很实用；注意在合规授权范围内使用。"
   },
@@ -592,7 +592,7 @@ window.RESOURCES_DATA = [
       "微软"
     ],
     "added": "2026-11-25",
-    "stars": 198768,
+    "stars": 198790,
     "language": "Python",
     "reason": "本地运行，保留标题表格列表结构，支持 OCR 识别，非常适合给大模型预处理各类文档素材"
   },
@@ -609,7 +609,7 @@ window.RESOURCES_DATA = [
       "TypeScript"
     ],
     "added": "2026-11-25",
-    "stars": 334307,
+    "stars": 334401,
     "language": "Shell",
     "reason": "工程化风格、少花活，学 TS 和前端的人拿来提升 AI 写码质量很值。"
   },
@@ -627,7 +627,7 @@ window.RESOURCES_DATA = [
       "markdown"
     ],
     "added": "2026-11-25",
-    "stars": 64751,
+    "stars": 64756,
     "language": "Go",
     "reason": "部署简单、资源占用低，数据完全自主可控，适合随手记录灵感与个人知识沉淀"
   },
@@ -644,7 +644,7 @@ window.RESOURCES_DATA = [
       "开源"
     ],
     "added": "2026-11-25",
-    "stars": 11384,
+    "stars": 11386,
     "language": "C",
     "reason": "电脑内存总见底时，比商业内存清理软件更轻更可控。"
   },
@@ -661,7 +661,7 @@ window.RESOURCES_DATA = [
       "思维模型"
     ],
     "added": "2026-11-25",
-    "stars": 39211,
+    "stars": 39221,
     "language": "Python",
     "reason": "让 AI 模仿某个专家的思考方式做评审或写作，是很新也很实用的玩法，值得试。"
   },
@@ -678,7 +678,7 @@ window.RESOURCES_DATA = [
       "知识管理"
     ],
     "added": "2026-11-25",
-    "stars": 54358,
+    "stars": 54415,
     "language": "Shell",
     "reason": "用 Obsidian 管理笔记的人可以让 AI 直接读写整理库，官方出品兼容性好。"
   },
@@ -695,8 +695,8 @@ window.RESOURCES_DATA = [
       "开发工具"
     ],
     "added": "2026-11-25",
-    "stars": null,
-    "language": "",
+    "stars": 33857,
+    "language": "TypeScript",
     "reason": "基于 Codex CLI 扩展复杂工作流，支持多智能体协作、项目指引与代码审查，适合提升 AI 编码任务的完整度与稳定性"
   },
   {
@@ -714,8 +714,8 @@ window.RESOURCES_DATA = [
       "开发工具"
     ],
     "added": "2026-11-25",
-    "stars": 229637,
-    "language": "TypeScript",
+    "stars": null,
+    "language": "",
     "reason": "完全开源不绑定特定模型，支持本地大模型，终端交互体验优秀，适合 AI 辅助软件开发工作。"
   },
   {
@@ -732,7 +732,7 @@ window.RESOURCES_DATA = [
       "移动端"
     ],
     "added": "2026-11-25",
-    "stars": 142592,
+    "stars": 142886,
     "language": "TypeScript",
     "reason": "让多个编码代理并行干活且复用已付费的订阅，手机上还能远程查看进度，适合“派活就走”的工作流。"
   },
@@ -749,8 +749,8 @@ window.RESOURCES_DATA = [
       "工具"
     ],
     "added": "2026-11-25",
-    "stars": null,
-    "language": "",
+    "stars": 28272,
+    "language": "Shell",
     "reason": "长任务不怕中途崩：计划落在文件里，/clear 或重启后接得上，做大型自动化任务必备。"
   },
   {
@@ -767,7 +767,7 @@ window.RESOURCES_DATA = [
       "微软"
     ],
     "added": "2026-11-25",
-    "stars": 141479,
+    "stars": 141494,
     "language": "C",
     "reason": "免费开源，内置窗口布局、颜色拾取、批量重命名等实用组件，显著增强Windows使用体验"
   },
@@ -785,7 +785,7 @@ window.RESOURCES_DATA = [
       "资源清单"
     ],
     "added": "2026-11-25",
-    "stars": 501833,
+    "stars": 501862,
     "language": "Python",
     "reason": "收录大量不同领域免费接口，适合原型开发、项目练习，省去四处搜集 API 的时间成本"
   },
@@ -803,8 +803,8 @@ window.RESOURCES_DATA = [
       "开发工具"
     ],
     "added": "2026-11-25",
-    "stars": 79300,
-    "language": "JavaScript",
+    "stars": null,
+    "language": "",
     "reason": "大厂出品且结果可机读，能直接嵌进 CI 或代理工作流里给自己项目做定期安全体检。"
   },
   {
@@ -822,8 +822,8 @@ window.RESOURCES_DATA = [
       "3d 地图"
     ],
     "added": "2026-11-25",
-    "stars": 4209,
-    "language": "TypeScript",
+    "stars": null,
+    "language": "",
     "reason": "无需后端服务，本地直接部署，一站式聚合多类全球公开数据，适合做宏观态势观测与数据可视化演示"
   },
   {
@@ -841,7 +841,7 @@ window.RESOURCES_DATA = [
       "工具"
     ],
     "added": "2026-11-25",
-    "stars": 97613,
+    "stars": 97629,
     "language": "TypeScript",
     "reason": "功能齐全，数据本地处理不上传第三方服务器，支持 API 与流水线自动化，可私有部署保护文档隐私"
   },
@@ -859,7 +859,7 @@ window.RESOURCES_DATA = [
       "工具"
     ],
     "added": "2026-11-25",
-    "stars": 78026,
+    "stars": 78057,
     "language": "Python",
     "reason": "AI 自动渗透还是新赛道，但作为自查自家项目漏洞或学习进攻性安全的起点很合适。"
   },
@@ -876,7 +876,7 @@ window.RESOURCES_DATA = [
       "开发工具"
     ],
     "added": "2026-11-25",
-    "stars": 328368,
+    "stars": 328513,
     "language": "Shell",
     "reason": "目前最火的 agent 工作流框架之一，觉得 AI 做复杂任务不靠谱时从这套方法论入手。"
   },
@@ -893,7 +893,7 @@ window.RESOURCES_DATA = [
       "开发工具"
     ],
     "added": "2026-11-25",
-    "stars": 82255,
+    "stars": 82410,
     "language": "TypeScript",
     "reason": "把“AI 写代码”的流程从固定工位解放出来，出差或通勤时也能继续盯项目，轻量好上手。"
   },
@@ -910,7 +910,7 @@ window.RESOURCES_DATA = [
       "Web 设计"
     ],
     "added": "2026-11-25",
-    "stars": 122364,
+    "stars": 122417,
     "language": "JavaScript",
     "reason": "解决“AI 生成的页面千篇一律”的问题，做落地页和个人网站时很实用。"
   },
@@ -927,8 +927,8 @@ window.RESOURCES_DATA = [
       "研究框架"
     ],
     "added": "2026-11-25",
-    "stars": 123942,
-    "language": "TypeScript",
+    "stars": null,
+    "language": "",
     "reason": "“AI + 交易研究”的代表项目，想自建交易 agent 时它的分工设计直接可抄作业。"
   },
   {
@@ -945,8 +945,8 @@ window.RESOURCES_DATA = [
       "前端"
     ],
     "added": "2026-11-25",
-    "stars": null,
-    "language": "",
+    "stars": 155280,
+    "language": "Python",
     "reason": "AI 生成页面总是一股“AI 味”的话，用这个 skill 注入专业设计判断，页面质感直接上一个台阶。"
   },
   {
@@ -959,7 +959,7 @@ window.RESOURCES_DATA = [
       "梯子"
     ],
     "added": "2026-11-25",
-    "stars": 121602,
+    "stars": 121629,
     "language": "C#",
     "reason": "稳定"
   },
@@ -978,7 +978,7 @@ window.RESOURCES_DATA = [
       "开源"
     ],
     "added": "2026-11-25",
-    "stars": 11072,
+    "stars": 11071,
     "language": "Python",
     "reason": "本地保存敏感数据，集成金融 AI 智能体，支持多模型接入，适合金融 AI 应用二次开发与量化研究。"
   },
@@ -996,7 +996,7 @@ window.RESOURCES_DATA = [
       "开发工具"
     ],
     "added": "2026-11-25",
-    "stars": 41176,
+    "stars": 41190,
     "language": "TypeScript",
     "reason": "技能分发和安装不用自己 clone 来 clone 去，Vercel 官方入口省事。"
   },
@@ -1014,8 +1014,8 @@ window.RESOURCES_DATA = [
       "chrome 扩展"
     ],
     "added": "2026-11-25",
-    "stars": null,
-    "language": "",
+    "stars": 20755,
+    "language": "TypeScript",
     "reason": "丰富 Gemini 网页版功能，支持对话分类归档与时间线回溯，提升大模型网页端使用效率"
   },
   {
@@ -1031,7 +1031,7 @@ window.RESOURCES_DATA = [
       "工具"
     ],
     "added": "2026-11-25",
-    "stars": 66164,
+    "stars": 66165,
     "language": "Rust",
     "reason": "受够了传统终端体验的话，Warp 的块状输出和 AI 助手都很顺手。"
   },
@@ -1065,7 +1065,7 @@ window.RESOURCES_DATA = [
       "去臃肿"
     ],
     "added": "2026-11-25",
-    "stars": 15160,
+    "stars": 15163,
     "language": "C#",
     "reason": "新装的 Windows 系统跑脚本清理一遍，流畅度和隐私都会好很多。"
   },
@@ -1100,7 +1100,7 @@ window.RESOURCES_DATA = [
       "教程"
     ],
     "added": "2026-11-25",
-    "stars": 1391,
+    "stars": 1392,
     "language": "",
     "reason": "覆盖区块链基础到前沿方向，资料整理全面，适合区块链入门与进阶学习查阅。"
   },
@@ -1117,7 +1117,7 @@ window.RESOURCES_DATA = [
       "资源搜索"
     ],
     "added": "2026-11-24",
-    "stars": 15403,
+    "stars": 15408,
     "language": "Go",
     "reason": "支持并发搜索、智能结果排序与二级缓存，Docker 一键部署，可对接多种网盘资源源，方便自建网盘搜索服务"
   },
@@ -1135,8 +1135,8 @@ window.RESOURCES_DATA = [
       "技术学习"
     ],
     "added": "2026-11-24",
-    "stars": 566005,
-    "language": "Markdown",
+    "stars": null,
+    "language": "",
     "reason": "汇集海量从零造轮子的学习资料，通过动手实现来深入理解各类技术底层原理。"
   },
   {
@@ -1153,8 +1153,8 @@ window.RESOURCES_DATA = [
       "AI 训练"
     ],
     "added": "2026-11-24",
-    "stars": null,
-    "language": "",
+    "stars": 76315,
+    "language": "Python",
     "reason": "集成 LoRA、QLoRA、DPO、PPO 等主流训练算法，提供 Web 可视化界面，降低大模型微调的上手门槛"
   },
   {

@@ -133,7 +133,7 @@
       background: var(--ink);
       color: var(--on-dark);
       display: grid;
-      grid-template-rows: auto auto;
+      grid-template-rows: auto auto auto;
       row-gap: clamp(4rem, 10vw, 9rem);
       padding: var(--margin);
     }
@@ -368,19 +368,22 @@
         <ul>
           <li class="footer-cols-label">时间</li>
           <li>北京时间</li>
-          <li class="footer-clock nums" id="clock">--:--:--</li>
+          <li class="footer-clock nums" id="clock" data-clock-flip>--:--:--</li>
           <li class="footer-date nums" id="date">----年--月--日</li>
         </ul>
       </li>
     </ul>
+    <div class="footer-wordmark-wrap" aria-hidden="true">
+      <div class="footer-wordmark" data-scramble>WenCaleb</div>
+    </div>
     <div class="footer-bottom">
-      <div class="marquee" aria-hidden="true">
-        <div class="marquee-track">
-          <div class="marquee-group">
-            <span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span>
+      <div class="marquee" data-marquee-duration="36" aria-hidden="true">
+        <div class="marquee-track motion">
+          <div class="marquee-group" data-marquee-items="背诵,WenCaleb,默写,复习">
+            <span class="marquee-item">背诵</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">默写</span><span class="marquee-dot">·</span><span class="marquee-item">复习</span><span class="marquee-dot">·</span>
           </div>
           <div class="marquee-group">
-            <span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span>
+            <span class="marquee-item">背诵</span><span class="marquee-dot">·</span><span class="marquee-item">WenCaleb</span><span class="marquee-dot">·</span><span class="marquee-item">默写</span><span class="marquee-dot">·</span><span class="marquee-item">复习</span><span class="marquee-dot">·</span>
           </div>
         </div>
       </div>
